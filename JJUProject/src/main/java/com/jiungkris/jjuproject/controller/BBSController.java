@@ -87,8 +87,8 @@ public class BBSController {
 		String route = request.getParameter("b_type");
 		
 		try {
-			dto = service.read(dto.getB_no());
 			realPW = dto.getB_pw();
+			dto = service.read(dto.getB_no());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
