@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.jiungkris.jjuproject.mappers.memberMapper">
+
+    <select id="login" resultType="memberVO">
+        SELECT * FROM tbl_member WHERE id = #{id} AND pw = #{pw}
+    </select>
+    
+    <select id="join">
+    	INSERT INTO `jjuproject`.`tbl_member` (`id`, `pw`, `name`, `email`, `phone`) VALUES (#{id}, #{pw}, #{name}, #{email}, #{phone})
+    </select>
+     
+</mapper>
