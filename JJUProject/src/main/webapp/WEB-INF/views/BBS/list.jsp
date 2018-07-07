@@ -32,5 +32,6 @@
 	</table>
 	
 	<a href="/BBS/create">Write</a>
+	<a href="javascript:history.back();">Back</a>
 </body>
 </html>

@@ -18,6 +18,6 @@
 			<tr><td><input type="submit" value="Sign in"></td></tr>
 		</table>
     </form>
-
+	<a href="javascript:history.back();">Back</a>
 </body>
 </html>

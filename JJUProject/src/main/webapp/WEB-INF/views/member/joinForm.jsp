@@ -9,16 +9,53 @@
 <body>
 	<h1>Join Page</h1>
 	
-	<form action = "/member/joinProcess" method = "post"> 
+	<form action = "/member/joinProcess" method = "post" name="joinInfo" onsubmit="return check()"> 
 		<table border="1">
 			<tr><td><input type="text" name="id" placeholder="Your Username"></td></tr>
 			<tr><td><input type="password" name="pw" placeholder="Your Password"></td></tr>
 			<tr><td><input type="text" name="name" placeholder="Your Name"></td></tr>
 			<tr><td><input type="text" name="email" placeholder="Your Email"></td></tr>
 			<tr><td><input type="text" name="phone" placeholder="Your Phone"></td></tr>
-			<tr><td><input type="submit" value="Sign in"></td></tr>
+			<tr><td><button type="submit">Sign In</button></td></tr>
 		</table>
     </form>
+    <a href="javascript:history.back();">Back</a>
+	
+	<script type="text/javascript">
+    
+        function check()
+        {
+        	if(!document.joinInfo.id.value){
+        		alert("Username not long enough")
+        		document.joinInfo.id.focus()
+        		return false
+        	}
+        	else if(!document.joinInfo.pw.value){
+        		alert("Password not long enough")
+        		document.joinInfo.pw.focus()
+        		return false
+        	}
+        	else if(!document.joinInfo.name.value){
+        		alert("Name not long enough")
+        		document.joinInfo.name.focus()
+        		return false
+        	}
+        	else if(!document.joinInfo.email.value){
+        		alert("Email not long enough")
+        		document.joinInfo.email.focus()
+        		return false
+        	}
+        	else if(!document.joinInfo.phone.value){
+        		alert("Phone not long enough")
+        		document.joinInfo.phone.focus()
+        		return false
+        	}
+        	else{
+        		return true
+        	}
+        }
+        
+    </script>
     
 </body>
 </html>

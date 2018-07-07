@@ -54,8 +54,11 @@ public class MemberController {
     @RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
     public String joinProcess(MemberVO dto) {
     	
-    	service.join(dto);
+    	String page = "";
     	
-    	return "redirect:/";
+    	service.join(dto);
+		page = "redirect:/";
+    	
+    	return page;
     }
 }

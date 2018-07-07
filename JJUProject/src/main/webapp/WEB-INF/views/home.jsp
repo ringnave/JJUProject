@@ -24,7 +24,7 @@
 		</c:otherwise>
 	</c:choose>
 	
-	<a href="/join">Sign up</a> <br>
+	<a href="/member/join">Sign up</a> <br>
 	
 	<a href="/BBS/list">Forum</a>
 	
