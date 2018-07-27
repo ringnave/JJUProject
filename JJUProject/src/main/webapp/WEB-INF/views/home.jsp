@@ -7,9 +7,7 @@
 	<title>Home</title>
 </head>
 <body>
-	<h1>
-		Home
-	</h1>
+	<a href="/"><h1>Home</h1></a>
 
 	<c:if test="${not empty loginSuccess}">
 		${loginSuccess.id} (${loginSuccess.name}) is online.
@@ -25,8 +23,6 @@
 	</c:choose>
 	
 	<a href="/member/join">Sign up</a> <br>
-	
-	<a href="/BBS/list">Forum</a>
 	
 </body>
 </html>

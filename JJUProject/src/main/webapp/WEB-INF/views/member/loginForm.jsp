@@ -4,12 +4,12 @@
 <%@ page session="true" %>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Login Page</title>
+	<jsp:include page="../home.jsp" />
 </head>
 <body>
-	<h1>
-		Login Page
-	</h1>
+	<h1>Login Page</h1>
 	
 	<form action = '<c:url value="/member/loginProcess" />' method = "post"> 
 		<table border="1">

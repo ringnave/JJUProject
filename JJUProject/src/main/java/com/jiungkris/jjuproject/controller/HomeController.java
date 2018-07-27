@@ -25,7 +25,7 @@ public class HomeController {
  
         logger.info("home");
  
-        return "home";
+        return "redirect:BBS/list";
     }
     
 }

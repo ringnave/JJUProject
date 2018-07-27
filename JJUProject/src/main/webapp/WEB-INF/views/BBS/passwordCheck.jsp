@@ -9,7 +9,7 @@
 <body>
 
 	<h1>
-		Update Check
+		Password Check
 	</h1>
 	
 	<form action = "/BBS/passwordProcess" method = "post"> 
