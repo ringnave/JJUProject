@@ -28,4 +28,17 @@
         UPDATE jjuproject.tbl_bbs SET b_title = #{b_title} , b_pw = #{b_pw}, b_writer = #{b_writer}, b_content = #{b_content} , b_views = #{b_views} WHERE b_no = #{b_no}
     </update>
  
+ 	<!-- Paging -->
+ 	<select id="getCount" resultType="int">
+ 		SELECT count(*) FROM jjuproject.tbl_bbs
+ 	</select>
+ 	
+ 	<select id="paging" resultType="bbsVO">
+ 		SELECT * FROM jjuproject.tbl_bbs ORDER BY b_group DESC, b_step ASC LIMIT #{offset}, #{noOfRecords}
+ 	</select>
+ 	
+ 	<!-- Get IDs -->
+ 	<select id="getIds" resultType="memberVO">
+ 		SELECT id, name FROM jjuproject.tbl_member ORDER BY name ASC;
+ 	</select>
 </mapper>

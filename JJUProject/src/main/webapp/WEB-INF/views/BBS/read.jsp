@@ -31,6 +31,6 @@
 	</table>
 	<a href="/BBS/prePasswordCheck?b_type=update&b_no=${read.b_no}">Modify</a>
 	<a href="/BBS/prePasswordCheck?b_type=delete&b_no=${read.b_no}">Delete</a>
-	<a href="/BBS/list">Back</a>
+	<a href="#" onClick="history.go(-1); return false;">Back</a>
 </body>
 </html>

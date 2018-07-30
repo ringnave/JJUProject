@@ -34,7 +34,7 @@ public class MemberController {
             session.setAttribute("loginSuccess", vo);
             page = "redirect:/";
         }else {
-        	page = "redirect:/login";
+        	page = "redirect:/member/login";
         }
          
         return page;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jiungkris.jjuproject.dao.BBSDAO;
 import com.jiungkris.jjuproject.vo.BBSVO;
+import com.jiungkris.jjuproject.vo.MemberVO;
 
 @Service
 public class BBSServiceImpl implements BBSService {
@@ -38,6 +39,21 @@ public class BBSServiceImpl implements BBSService {
 	@Override
 	public void update(BBSVO vo) throws Exception {
 		dao.update(vo);
+	}
+
+	@Override
+	public List<BBSVO> paging(int offset, int noOfRecords) throws Exception {
+		return dao.paging(offset, noOfRecords);
+	}
+
+	@Override
+	public int getCount() throws Exception {
+		return dao.getCount();
+	}
+
+	@Override
+	public List<MemberVO> getIds() throws Exception {
+		return dao.getIds();
 	}
 
 }

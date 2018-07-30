@@ -11,28 +11,44 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.jiungkris.jjuproject.paging.Paging;
 import com.jiungkris.jjuproject.service.BBSService;
 import com.jiungkris.jjuproject.vo.BBSVO;
+import com.jiungkris.jjuproject.vo.MemberVO;
 
 @Controller
 @RequestMapping(value = "/BBS")
 public class BBSController {
 	
 	@Inject
-	BBSService service;
+	BBSService service;	
 	
 	@RequestMapping(value="/list")
-	public String list(Model model) {
-		List<BBSVO> dtos = new ArrayList<BBSVO>();
+	public String list(Model model, HttpServletRequest req) throws Exception {
+		int currentPageNo = 1;
+		int maxPost = 10;
 		
-		try {
-			dtos = service.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if(req.getParameter("page") != null)
+			currentPageNo = Integer.parseInt(req.getParameter("page"));
 		
-		model.addAttribute("list", dtos);
+		Paging paging = new Paging(currentPageNo, maxPost);
 		
+		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
+		
+		List<BBSVO> page = new ArrayList<BBSVO>();
+		page = service.paging(offset, paging.getMaxPost());
+		paging.setNumberOfRecords(service.getCount());
+
+		paging.makePaging();
+		
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		
+		idList = service.getIds();
+		
+		model.addAttribute("page", page);
+		model.addAttribute("paging", paging);
+		model.addAttribute("idList", idList);
+
 		return "/BBS/list";
 	}
 	
