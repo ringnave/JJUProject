@@ -19,10 +19,11 @@
 		</c:when>
 		<c:otherwise>
 			<a href="/member/logout">Sign Out</a>
+			<a href="/member/deactivate">Deactivate Account</a>
 		</c:otherwise>
 	</c:choose>
 	
-	<a href="/member/join">Sign up</a> <br>
+	<a href="/member/join">Sign Up</a> <br>
 	
 </body>
 </html>

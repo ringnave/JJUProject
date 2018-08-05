@@ -24,4 +24,19 @@ public class MemberDAOImpl implements MemberDAO {
 	public void join(MemberVO vo) {
 		sqlSession.update(namespace + "join", vo);
 	}
+
+	@Override
+	public boolean idCheck(String id) {
+		if(sqlSession.selectOne(namespace + "idCheck", id) != null) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	@Override
+	public void deactivate(String id) {
+		sqlSession.delete(namespace + "deactivate", id);
+	}
 }

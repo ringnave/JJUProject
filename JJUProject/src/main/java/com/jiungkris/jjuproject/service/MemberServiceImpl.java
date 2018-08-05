@@ -22,4 +22,14 @@ public class MemberServiceImpl implements MemberService {
 	public void join(MemberVO vo) {
 		dao.join(vo);
 	}
+	
+	@Override
+	public boolean idCheck(String id) {
+		return dao.idCheck(id);
+	}
+
+	@Override
+	public void deactivate(String id) {
+		dao.deactivate(id);
+	}
 }

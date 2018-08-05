@@ -13,4 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	INSERT INTO `jjuproject`.`tbl_member` (`id`, `pw`, `name`, `email`, `phone`) VALUES (#{id}, #{pw}, #{name}, #{email}, #{phone})
     </select>
      
+    <select id="idCheck" resultType="string">
+        SELECT id FROM tbl_member WHERE id = #{id}
+    </select>
+    
+     <delete id="deactivate">
+        DELETE FROM jjuproject.tbl_member WHERE id = #{id}
+    </delete>
 </mapper>
