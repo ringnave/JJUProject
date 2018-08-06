@@ -27,7 +27,7 @@
 	<input type="hidden" id="rsaPublicKeyModulus" value="<%=request.getAttribute("publicKeyModulus") %>" />
     <input type="hidden" id="rsaPublicKeyExponent" value="<%=request.getAttribute("publicKeyExponent") %>" />
 	
-	<a href="<%=request.getContextPath()%>/joinForm.jsp" onclick="checkJoin(); return false;">Sign In</a>
+	<a href="<%=request.getContextPath()%>/member/join" onclick="checkJoin(); return false;">Sign In</a>
 	
 	<form action = "/member/joinProcess" method = "post" id="joinInfo" name="joinInfo" style="display: none;"> 
 		<input type="hidden" id="id" name="id" value="" >
@@ -43,6 +43,6 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/rsa.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/prng4.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/rng.js"></script>
-    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/login.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/join.js"></script>
 </body>
 </html>

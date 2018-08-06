@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,13 +34,56 @@ public class MemberController {
     MemberService service;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginForm(){
+    public String loginForm(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    	
+    	//rsa encode start
+    	RSA rsa = new RSA();
+    	KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+    	
+        KeyPair keyPair = rsa.createKeyPair();
+        
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        
+        session = request.getSession();
+        session.setAttribute("privateKey", privateKey);
+        
+        RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+    	
+        String publicKeyModulus = publicSpec.getModulus().toString(16);
+        String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
+        
+        request.setAttribute("publicKeyModulus", publicKeyModulus);
+        request.setAttribute("publicKeyExponent", publicKeyExponent);
+        
+        request.getRequestDispatcher("/WEB-INF/views/member/loginForm.jsp").forward(request, response);
+        //rsa encode end
+    	
         return "member/loginForm";
     }
      
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-    public String loginProcess(HttpSession session, MemberVO dto) {
+    public String loginProcess(HttpSession session, MemberVO dto, HttpServletRequest request) throws Exception {
         String page = "";
+        
+        //rsa decode start
+    	String securedId = request.getParameter("id");
+    	String securedPw = request.getParameter("pw");
+    	session = request.getSession();
+        PrivateKey privateKey = (PrivateKey) session.getAttribute("privateKey");
+        session.removeAttribute("privateKey");
+        
+        if (privateKey == null) {
+            throw new RuntimeException("No Private Key");
+        }
+        
+        try {            
+            dto.setId(decryptRsa(privateKey, securedId));
+            dto.setPw(decryptRsa(privateKey, securedPw));
+        } catch (Exception ex) {
+            throw new ServletException(ex.getMessage(), ex);
+        }
+        //rsa decode end
         
         if ( session.getAttribute("loginSuccess") != null ) {
             session.removeAttribute("loginSuccess");
@@ -78,7 +120,7 @@ public class MemberController {
     @RequestMapping(value = "/join")
     public String join(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-    	//rsa start
+    	//rsa encode start
     	RSA rsa = new RSA();
     	KeyFactory keyFactory = KeyFactory.getInstance("RSA");
     	
@@ -99,19 +141,20 @@ public class MemberController {
         request.setAttribute("publicKeyExponent", publicKeyExponent);
         
         request.getRequestDispatcher("/WEB-INF/views/member/joinForm.jsp").forward(request, response);
-        //rsa end
+        //rsa encode end
         
     	return "member/joinForm";
     }
     
     @RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
     public String joinProcess(MemberVO dto, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	
+    	//rsa decode start
     	String securedId = request.getParameter("id");
     	String securedPw = request.getParameter("pw");
     	String securedName = request.getParameter("name");
     	String securedEmail = request.getParameter("email");
     	String securedPhone = request.getParameter("phone");
-    	
     	session = request.getSession();
         PrivateKey privateKey = (PrivateKey) session.getAttribute("privateKey");
         session.removeAttribute("privateKey");
@@ -129,6 +172,7 @@ public class MemberController {
         } catch (Exception ex) {
             throw new ServletException(ex.getMessage(), ex);
         }
+        //rsa decode end
         
     	service.join(dto);
     	
