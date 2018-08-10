@@ -13,7 +13,17 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
+	
+	<!-- Custom Listener -->
+	<listener>
+		<listener-class>com.jiungkris.jjuproject.listener.SessionListener</listener-class>
+	</listener>
+	
+	<!-- Session Time Out -->
+	<session-config>
+		<session-timeout>1</session-timeout>
+	</session-config>
+	
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -51,6 +61,5 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- Being able to use Korean End -->
-	
 	
 </web-app>

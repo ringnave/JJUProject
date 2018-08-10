@@ -18,6 +18,7 @@
 			width: 50%;
 		}
 	</style>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
 	<div id="content">
@@ -71,17 +72,60 @@
 	</div>
 	
 	<div id="sidebar">
-		<select name="users" size="20">
+		<form name="currentUsersForm">
+			<input type="text" name="currentUsers" readonly="readonly">
+		</form>
+
+		<select id="idList" name="users" size="20">
 			<c:forEach var="idList" items="${idList}">
-				<option value="${idList.id}"> ${idList.name} (${idList.id}) </option>
+				<c:choose>
+					<c:when test="${idList.current == 1 }">
+						<option id="${idList.id}" value="${idList.id}" style="color:blue"> ${idList.name} (${idList.id}) </option>
+					</c:when>
+					<c:otherwise>
+						<option id="${idList.id}" value="${idList.id}"> ${idList.name} (${idList.id}) </option>
+					</c:otherwise>
+				</c:choose>
+				
 			</c:forEach>
 		</select>
 	</div>
 	
-	<script type="text/javascript">
+	<script type="text/javascript"> 
+	
+		function startInterval(seconds, callback) { 
+			callback() 
+			return setInterval(callback, seconds * 1000) 
+		}
+		
+		startInterval(1, function(){
+			$.ajax({ 
+				async: true,
+		        type : "GET",
+		        url : "/current/getCurrentUsers", 
+		        contentType: "application/json; charset=UTF-8",
+		        success : function(data) {
+		        	document.currentUsersForm.currentUsers.value = 'Current Users: ' + data.currentUsers
+		        	
+		        	data.currentUsersList.map(value => {
+		        		if(value.current == 1){
+		        			document.getElementById(value.id).style.color="blue"
+		        		}
+		        		else{
+		        			document.getElementById(value.id).style.color="black"
+		        		}
+		        	})
+		        },
+		        error : function(request, status, error) {
+		        	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
+		        }
+		    });
+		})
+		
 		function goPage(pages){
 			location.href = '?' + "page=" + pages;
 		}
+		
 	</script>
 </body>
 </html>

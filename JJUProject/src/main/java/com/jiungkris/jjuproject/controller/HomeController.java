@@ -22,7 +22,6 @@ public class HomeController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Locale locale, Model model) throws Exception{
- 
         logger.info("home");
  
         return "redirect:BBS/list";

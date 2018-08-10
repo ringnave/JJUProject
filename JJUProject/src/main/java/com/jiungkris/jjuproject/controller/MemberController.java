@@ -2,7 +2,6 @@ package com.jiungkris.jjuproject.controller;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jiungkris.jjuproject.rsa.RSA;
+import com.jiungkris.jjuproject.service.CurrentService;
 import com.jiungkris.jjuproject.service.MemberService;
 import com.jiungkris.jjuproject.vo.MemberVO;
 
@@ -31,7 +31,10 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 public class MemberController {
  
     @Inject
-    MemberService service;
+    MemberService memberService;
+    
+    @Inject
+    CurrentService currentService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginForm(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -63,8 +66,10 @@ public class MemberController {
     }
      
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-    public String loginProcess(HttpSession session, MemberVO dto, HttpServletRequest request) throws Exception {
-        String page = "";
+    public String loginProcess(MemberVO dto, HttpServletRequest request) throws Exception {
+    	HttpSession session = request.getSession();
+    	
+    	String page = "";
         
         //rsa decode start
     	String securedId = request.getParameter("id");
@@ -88,9 +93,11 @@ public class MemberController {
         if ( session.getAttribute("loginSuccess") != null ) {
             session.removeAttribute("loginSuccess");
         }
-        MemberVO vo = service.login(dto);
+        
+        MemberVO vo = memberService.login(dto);
         if ( vo != null ){
             session.setAttribute("loginSuccess", vo);
+            currentService.login(vo.getId());
             page = "redirect:/";
         }else {
         	page = "redirect:/member/login";
@@ -101,7 +108,9 @@ public class MemberController {
  
     @RequestMapping(value = "/logout")
     public String logout(HttpSession session) {
-        session.invalidate();
+    	MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
+        session.removeAttribute("loginSuccess");
+        currentService.logout(vo.getId());
         return "redirect:/";
     }
     
@@ -110,7 +119,7 @@ public class MemberController {
     	
     	 MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
     	
-    	service.deactivate(vo.getId());
+    	memberService.deactivate(vo.getId());
     	
     	session.invalidate();
         
@@ -174,7 +183,7 @@ public class MemberController {
         }
         //rsa decode end
         
-    	service.join(dto);
+    	memberService.join(dto);
     	
     	return "redirect:/";
     }
@@ -208,7 +217,7 @@ public class MemberController {
     	
     	Map<Object, Object> map = new HashMap<Object, Object>();
     	 
-    	isUsernameValid = service.idCheck(id);
+    	isUsernameValid = memberService.idCheck(id);
         map.put("valid", isUsernameValid);
     	
     	return map;

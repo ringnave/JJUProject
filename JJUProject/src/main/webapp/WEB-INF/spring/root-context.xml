@@ -35,8 +35,10 @@
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
 
+	<!-- Session Listener -->
+	<bean id="currentService" class="com.jiungkris.jjuproject.service.CurrentServiceImpl"></bean>
+
 	<!-- bean registration -->
 	<context:component-scan base-package="com.jiungkris.jjuproject.dao" />
 	<context:component-scan base-package="com.jiungkris.jjuproject.service" />
-
 </beans>

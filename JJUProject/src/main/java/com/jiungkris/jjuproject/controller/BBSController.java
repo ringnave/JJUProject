@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jiungkris.jjuproject.paging.Paging;
 import com.jiungkris.jjuproject.service.BBSService;
+import com.jiungkris.jjuproject.service.CurrentService;
 import com.jiungkris.jjuproject.vo.BBSVO;
 import com.jiungkris.jjuproject.vo.MemberVO;
 
@@ -21,10 +22,16 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 public class BBSController {
 	
 	@Inject
-	BBSService service;	
+	BBSService bbsService;	
+	
+	@Inject
+	CurrentService currentService;
 	
 	@RequestMapping(value="/list")
 	public String list(Model model, HttpServletRequest req) throws Exception {
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		
 		int currentPageNo = 1;
 		int maxPost = 10;
 		
@@ -36,19 +43,15 @@ public class BBSController {
 		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
 		
 		List<BBSVO> page = new ArrayList<BBSVO>();
-		page = service.paging(offset, paging.getMaxPost());
-		paging.setNumberOfRecords(service.getCount());
+		page = bbsService.paging(offset, paging.getMaxPost());
+		paging.setNumberOfRecords(bbsService.getCount());
 
 		paging.makePaging();
-		
-		List<MemberVO> idList = new ArrayList<MemberVO>();
-		
-		idList = service.getIds();
-		
+
 		model.addAttribute("page", page);
 		model.addAttribute("paging", paging);
 		model.addAttribute("idList", idList);
-
+		
 		return "/BBS/list";
 	}
 	
@@ -58,10 +61,10 @@ public class BBSController {
 		BBSVO dto = new BBSVO();
 		
 		try {
-			dto = service.read(b_no);
+			dto = bbsService.read(b_no);
 			dto.setB_content(dto.getB_content().replace("\r\n", "<br>"));
 			dto.setB_views(dto.getB_views()+1);
-			service.update(dto);
+			bbsService.update(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,7 +83,7 @@ public class BBSController {
 	public String createProcess(BBSVO dto) {
 		
 		try {
-			service.create(dto);
+			bbsService.create(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,7 +107,7 @@ public class BBSController {
 		
 		try {
 			realPW = dto.getB_pw();
-			dto = service.read(dto.getB_no());
+			dto = bbsService.read(dto.getB_no());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,7 +121,7 @@ public class BBSController {
 				break;
 			case "delete":
 				try {
-					service.delete(dto.getB_no());
+					bbsService.delete(dto.getB_no());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -138,7 +141,7 @@ public class BBSController {
 	@RequestMapping(value = "/updateProcess", method = RequestMethod.POST)
 	public String updateProcess(BBSVO dto) {
 		try {
-			service.update(dto);
+			bbsService.update(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

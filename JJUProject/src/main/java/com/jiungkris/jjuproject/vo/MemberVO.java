@@ -9,7 +9,16 @@ public class MemberVO {
 	private String email;
 	private String phone;
 	private Date regDate;
+	private int current;
 	
+	public int getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(int current) {
+		this.current = current;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -61,7 +70,7 @@ public class MemberVO {
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + ", phone=" + phone
-				+ ", regDate=" + regDate + "]";
+				+ ", regDate=" + regDate + ", current=" + current + "]";
 	}
 	
 }

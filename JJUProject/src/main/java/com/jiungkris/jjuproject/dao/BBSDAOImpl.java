@@ -19,6 +19,7 @@ public class BBSDAOImpl implements BBSDAO {
 	private SqlSession sqlSession;
 	
 	private String namespace = "com.jiungkris.jjuproject.mappers.BBSMapper.";
+	
 	@Override
 	public void create(BBSVO vo) throws Exception {
 		sqlSession.insert(namespace + "create", vo);
