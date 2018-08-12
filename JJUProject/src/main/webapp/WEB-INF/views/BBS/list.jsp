@@ -21,6 +21,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
+	<br>
 	<div id="content">
 		<h1>BBS</h1>
 		

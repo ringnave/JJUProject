@@ -11,19 +11,19 @@
 
 	<c:if test="${not empty loginSuccess}">
 		${loginSuccess.id} (${loginSuccess.name}) is online.
-	</c:if> <br>
+	</c:if>
 	
 	<c:choose>
 		<c:when test="${empty loginSuccess}">
 			<a href="/member/login">Sign In</a>
+			<a href="/member/join">Sign Up</a>
 		</c:when>
 		<c:otherwise>
 			<a href="/member/logout">Sign Out</a>
 			<a href="/member/deactivate">Deactivate Account</a>
+			<a href="/chat">Random Chat</a>
 		</c:otherwise>
 	</c:choose>
-	
-	<a href="/member/join">Sign Up</a> <br>
 	
 </body>
 </html>
