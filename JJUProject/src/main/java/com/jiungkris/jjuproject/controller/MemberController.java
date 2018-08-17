@@ -66,52 +66,57 @@ public class MemberController {
     }
      
     @RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-    public String loginProcess(MemberVO dto, HttpServletRequest request) throws Exception {
-    	HttpSession session = request.getSession();
-    	
-    	String page = "";
-        
-        //rsa decode start
-    	String securedId = request.getParameter("id");
-    	String securedPw = request.getParameter("pw");
-    	session = request.getSession();
-        PrivateKey privateKey = (PrivateKey) session.getAttribute("privateKey");
-        session.removeAttribute("privateKey");
-        
-        if (privateKey == null) {
-            throw new RuntimeException("No Private Key");
-        }
-        
-        try {            
-            dto.setId(decryptRsa(privateKey, securedId));
-            dto.setPw(decryptRsa(privateKey, securedPw));
-        } catch (Exception ex) {
-            throw new ServletException(ex.getMessage(), ex);
-        }
-        //rsa decode end
-        
-        if ( session.getAttribute("loginSuccess") != null ) {
-            session.removeAttribute("loginSuccess");
-        }
-        
-        MemberVO vo = memberService.login(dto);
-        if ( vo != null ){
-            session.setAttribute("loginSuccess", vo);
-            currentService.login(vo.getId());
-            page = "redirect:/";
-        }else {
-        	page = "redirect:/member/login";
-        }
-         
-        return page;
-    }
+	public String loginProcess(MemberVO dto, HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		
+		String page = "";
+	    
+	    //rsa decode start
+		String securedId = request.getParameter("id");
+		String securedPw = request.getParameter("pw");
+		session = request.getSession();
+	    PrivateKey privateKey = (PrivateKey) session.getAttribute("privateKey");
+	    session.removeAttribute("privateKey");
+	    
+	    if (privateKey == null) {
+	        throw new RuntimeException("No Private Key");
+	    }
+	    
+	    try {            
+	        dto.setId(decryptRsa(privateKey, securedId));
+	        dto.setPw(decryptRsa(privateKey, securedPw));
+	    } catch (Exception ex) {
+	        throw new ServletException(ex.getMessage(), ex);
+	    }
+	    //rsa decode end
+	    
+	    if ( session.getAttribute("loginSuccess") != null ) {
+	        session.removeAttribute("loginSuccess");
+	    }
+	    
+	    MemberVO vo = memberService.login(dto);
+	    if ( vo != null ){
+	        session.setAttribute("loginSuccess", vo);
+	        currentService.login(vo.getId());
+	        
+	        page = "redirect:/";
+	    }else {
+	    	page = "redirect:/member/login";
+	    }
+	     
+	    return page;
+	}
  
     @RequestMapping(value = "/logout")
     public String logout(HttpSession session) {
     	MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
-        session.removeAttribute("loginSuccess");
-        currentService.logout(vo.getId());
-        return "redirect:/";
+    	
+    	if(vo != null) {
+    		session.removeAttribute("loginSuccess");
+            currentService.logout(vo.getId());
+    	}
+        
+    	return "redirect:/";
     }
     
     @RequestMapping(value = "/deactivate")

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.jiungkris.jjuproject.mappers.currentMapper">
+	<update id="login">
+        UPDATE jjuproject.tbl_member SET current = 1 WHERE id = #{id}
+    </update>
+    
+    <update id="logout">
+        UPDATE jjuproject.tbl_member SET current = 0 WHERE id = #{id}
+    </update>
+    
+    <select id="getNumberOfCurrentUsers" resultType="int">
+    	SELECT count(IF(current=1,1,null)) FROM jjuproject.tbl_member
+    </select>
+    
+    <select id="getCurrentUsers" resultType="memberVO">
+    	SELECT id, name, current FROM jjuproject.tbl_member
+    </select>
+</mapper>

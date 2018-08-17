@@ -114,20 +114,20 @@ public class BBSController {
 		
 		if(realPW.equals(dto.getB_pw())) {
 			switch (route) {
-			case "update":
-				dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
-				model.addAttribute("dto", dto);
-				page = "/BBS/updateForm";
-				break;
-			case "delete":
-				try {
-					bbsService.delete(dto.getB_no());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				page = "redirect:list";
-			default:
-				break;
+				case "update":
+					dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
+					model.addAttribute("dto", dto);
+					page = "/BBS/updateForm";
+					break;
+				case "delete":
+					try {
+						bbsService.delete(dto.getB_no());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					page = "redirect:list";
+				default:
+					break;
 			}
 			
 		}
