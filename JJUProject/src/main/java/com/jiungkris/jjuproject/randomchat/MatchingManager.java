@@ -47,14 +47,7 @@ public class MatchingManager {
 			if(myTicket.getStrangerSession() == null) {
 				do{
 					strangerNum = random.nextInt(ticketList.size());
-					strangerSess = sessionList.get(strangerNum);
-					
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					
+					strangerSess = sessionList.get(strangerNum);				
 				}while(sessionList.get(strangerNum) == myTicket.getMySession()
 						|| ticketList.get(strangerNum).getStrangerSession() != null);
 				System.out.println("ticketList: " + ticketList);

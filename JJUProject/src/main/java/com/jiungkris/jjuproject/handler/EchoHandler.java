@@ -41,8 +41,10 @@ public class EchoHandler extends TextWebSocketHandler {
 		
 		Ticket myTicket = MatchingManager.findMyTicketBySession(session);
 		
-		myTicket.getMySession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
-		myTicket.getStrangerSession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
+		if(myTicket.getStrangerSession() != null) {
+			myTicket.getMySession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
+			myTicket.getStrangerSession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
+		}
 		
 		logger.info("{} received from {}", message.getPayload(), session.getId());
 	}
@@ -50,9 +52,13 @@ public class EchoHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		if(t != null) {
-			t.interrupt();
+			try {
+				t.interrupt();
+			} catch (Exception e) {
+			}
 		}
-		
+		Ticket myTicket = MatchingManager.findMyTicketBySession(session);
+		myTicket.getStrangerSession().close();
 		MatchingManager.removeTicketAndSession(session);
 		
 		logger.info("{} disconnected", session.getId());

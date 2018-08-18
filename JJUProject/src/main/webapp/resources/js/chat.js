@@ -1,15 +1,28 @@
+var sock
+
 $(document).ready(function() {
     $("#sendBtn").click(function() {
-      	console.log("btn")
-        sendMessage()
+        if($("#sendBtn").val() == "Start"){
+        	$("#data").empty()
+        	sock = new SockJS("/echo")
+
+          	sock.onmessage = onMessage
+
+          	sock.onclose = onClose
+          	
+          	$("#sendBtn").val("Send")
+          	$("#closeBtn").attr("type", "button")
+        } else {
+        	sendMessage()
+        }
     })
 })
 
-var sock = new SockJS("/echo")
-
-sock.onmessage = onMessage
-
-sock.onclose = onClose
+$(document).ready(function() {
+    $("#closeBtn").click(function() {
+        sock.close()
+    })
+})
 
 function sendMessage() {
 	sock.send($("#message").val())
@@ -24,5 +37,7 @@ function onMessage(evt) {
 }
 
 function onClose(evt) {
-	$("#data").append("is out")
+	$("#data").append("Chatting is over.")
+	$("#sendBtn").val("Start")
+    $("#closeBtn").attr("type", "hidden")
 }
