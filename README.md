@@ -1,3 +1,3 @@
 # JJUProject
 Portfolio
-This is the webpage with Login system, BBS and Random Talk.
+This is the webpage with RSA Login system, BBS and Random Talk.
