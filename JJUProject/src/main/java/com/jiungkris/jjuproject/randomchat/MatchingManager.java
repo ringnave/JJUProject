@@ -1,6 +1,6 @@
 package com.jiungkris.jjuproject.randomchat;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,25 +8,45 @@ import org.springframework.web.socket.WebSocketSession;
 
 public class MatchingManager {
 	
+	public static List<String> stringSessionList;
 	private static List<Ticket> ticketList;
 	private static List<WebSocketSession> sessionList;
 	
 	
 	static {
-		 ticketList = new ArrayList<Ticket>();
-		 sessionList = new ArrayList<WebSocketSession>();
+		stringSessionList = new LinkedList<String>();
+		ticketList = new LinkedList<Ticket>();
+		sessionList = new LinkedList<WebSocketSession>();
 	}
 	
 	public static void collect(Ticket ticket) {
+		stringSessionList.add(ticket.getMySession().toString().substring(32, 40).trim());
 		ticketList.add(ticket);
 		sessionList.add(ticket.getMySession());
 	}
 	
 	public static Ticket findMyTicketBySession(WebSocketSession session) {
-		return ticketList.get(sessionList.indexOf(session));
+		int index = sessionList.indexOf(session);
+		if(index == -1) {
+			return null;
+		}
+		else {
+			return ticketList.get(index);
+		}
 	}
 	
-	public static void removeTicketAndSession(WebSocketSession session) {
+	public static Ticket findMyTicketByStringSession(String session) {
+		int index = stringSessionList.indexOf(session);
+		if(index == -1) {
+			return null;
+		}
+		else {
+			return ticketList.get(index);
+		}
+	}
+	
+	public static void close(WebSocketSession session) {
+		stringSessionList.remove(session.toString().substring(32, 40).trim());
 		ticketList.remove(findMyTicketBySession(session));
 		sessionList.remove(session);
 	}
@@ -45,21 +65,25 @@ public class MatchingManager {
 			WebSocketSession strangerSess;
 			
 			if(myTicket.getStrangerSession() == null) {
-				do{
-					strangerNum = random.nextInt(ticketList.size());
-					strangerSess = sessionList.get(strangerNum);				
-				}while(sessionList.get(strangerNum) == myTicket.getMySession()
-						|| ticketList.get(strangerNum).getStrangerSession() != null);
-				System.out.println("ticketList: " + ticketList);
-				System.out.println(myTicket.getMySession() + " matched with " + strangerSess);
-				
-				myTicket.setStrangerSession(strangerSess);
-				MatchingManager.findMyTicketBySession(strangerSess).setStrangerSession(myTicket.getMySession());
-			}
-			else {
-				System.out.println(myTicket.getMySession() + " matched with " + myTicket.getStrangerSession());
-			}
-			
+				try {
+					do{
+						if(myTicket.getStrangerSession() != null) return;
+						System.out.println(myTicket.getThread() + " : finding..");
+						strangerNum = random.nextInt(ticketList.size());
+						strangerSess = sessionList.get(strangerNum);
+					}while(sessionList.get(strangerNum) == myTicket.getMySession()
+							|| ticketList.get(strangerNum).getStrangerSession() != null);
+					
+					myTicket.setStrangerSession(strangerSess);
+					findMyTicketBySession(strangerSess).setStrangerSession(myTicket.getMySession());
+					
+					myTicket.setMatched(true);
+					findMyTicketBySession(strangerSess).setMatched(true);
+					
+				} catch (Exception e) {
+					e.getStackTrace();
+				}
+			}			
 		}
 		
 	}

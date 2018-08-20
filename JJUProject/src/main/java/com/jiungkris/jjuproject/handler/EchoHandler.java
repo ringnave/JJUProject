@@ -1,7 +1,5 @@
 package com.jiungkris.jjuproject.handler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -29,6 +27,7 @@ public class EchoHandler extends TextWebSocketHandler {
 			Runnable r = new MatchingManager().new ThreradMatching(myTicket);
 			t = new Thread(r);
 			t.start();
+			myTicket.setThread(t);
 		}
 		
 		logger.info("{} connected", session.getId());
@@ -51,15 +50,18 @@ public class EchoHandler extends TextWebSocketHandler {
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		if(t != null) {
-			try {
-				t.interrupt();
-			} catch (Exception e) {
-			}
+		try {
+			t.interrupt();
+		} catch (Exception e) {
+			e.getStackTrace();
 		}
 		Ticket myTicket = MatchingManager.findMyTicketBySession(session);
-		myTicket.getStrangerSession().close();
-		MatchingManager.removeTicketAndSession(session);
+		
+		if(myTicket.getStrangerSession() != null) {
+			myTicket.getStrangerSession().close();
+		}
+		myTicket = null;
+		MatchingManager.close(session);
 		
 		logger.info("{} disconnected", session.getId());
 	}
