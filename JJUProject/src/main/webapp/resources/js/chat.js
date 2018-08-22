@@ -1,9 +1,11 @@
 var sock
 var sessionId
 var repeatInterval
+// This is for not affecting by keyboard
 var isMatched = false
 
 $(document).ready(function() {
+	clearInterval(repeatInterval)
     $("#sendBtn").click(function() {
         if($("#sendBtn").val() == "Start"){
         	$("#data").empty()
@@ -25,7 +27,6 @@ $(document).ready(function() {
           	        type : "POST",
           	        url : "/isMatched",
           	        data : sessionId,
-          	        dataType : "json",
           	        contentType: "application/json; charset=UTF-8",
           	        success : function(data) {
           	        	if(data.isMatched == true){
@@ -37,7 +38,7 @@ $(document).ready(function() {
           	        	}
           	        },
           	        error : function(request, status, error) {
-          	        	alert("error")
+          	        	console.log("click Error")
           	        }
           	    })
           	})
@@ -90,6 +91,7 @@ function randomString() {
 }
 
 function sendMessage() {
+	clearInterval(repeatInterval)
 	sock.send($("#message").val())
 }
 
@@ -101,22 +103,8 @@ function onMessage(evt) {
     idData.scrollTop = idData.scrollHeight
 }
 
-function onClose(evt) {
-	$.ajax({ 
-		async: true,
-        type : "POST",
-        url : "/closeThread",
-        data : sessionId,
-        dataType : "json",
-        contentType: "application/json; charset=UTF-8",
-        success : function(data) {
-        	console.log("success")
-        },
-        error : function(request, status, error) {
-        	alert("error")
-        }
-    });
-	
+function onClose(evt) {	
+	clearInterval(repeatInterval)
 	isMatched = false
 	$("#message").val("")
 	$("#data").append("Chatting is over.")

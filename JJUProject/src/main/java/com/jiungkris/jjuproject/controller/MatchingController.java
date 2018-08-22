@@ -3,38 +3,40 @@ package com.jiungkris.jjuproject.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jiungkris.jjuproject.randomchat.MatchingManager;
-import com.jiungkris.jjuproject.randomchat.Ticket;
+import com.jiungkris.jjuproject.randomchat.Room;
+import com.jiungkris.jjuproject.randomchat.RoomManager;
 
 @Controller
 public class MatchingController {
 	
+	private static Logger logger = LoggerFactory.getLogger(MatchingController.class);
+	
 	@ResponseBody
 	@RequestMapping(value = "/isMatched", method = RequestMethod.POST)
 	public Map<Object, Object> isMatched(@RequestBody String sessionId) {
-		Ticket myTicket = MatchingManager.findMyTicketByStringSession(sessionId);
-    	Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		
+    	Room room = RoomManager.findRoomBySession(sessionId);
     	
-    	if(myTicket == null) {
-    		map.put("isMatched", false);
-    	}
-    	else {
-    		map.put("isMatched", myTicket.isMatched());
-    	}
+		logger.info(sessionId + "'room: " + room);
+		
+    	if(room != null && room.getNumberOfPeople() == 2) {
+			map.put("isMatched", true);
+			logger.info(sessionId + " is matched (true)");
+		}
+		else {
+			map.put("isMatched", false);
+			logger.info(sessionId + " is not matched (false)");
+		}
     	
     	return map;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/closeThread", method = RequestMethod.POST)
-	public void closeThread(@RequestBody String sessionId) {
-		Ticket myTicket = MatchingManager.findMyTicketByStringSession(sessionId);
-    	myTicket.getThread().interrupt();
 	}
 }

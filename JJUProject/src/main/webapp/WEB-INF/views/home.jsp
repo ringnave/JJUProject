@@ -21,9 +21,9 @@
 		<c:otherwise>
 			<a href="/member/logout">Sign Out</a>
 			<a href="/member/deactivate">Deactivate Account</a>
-			<a href="/chat">Random Chat</a>
 		</c:otherwise>
 	</c:choose>
 	
+	<a href="/chat">Random Chat</a>
 </body>
 </html>

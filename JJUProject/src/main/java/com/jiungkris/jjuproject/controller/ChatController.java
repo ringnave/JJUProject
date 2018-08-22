@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class MessageController {
+public class ChatController {
 	
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
 	public String chat(HttpSession session) {

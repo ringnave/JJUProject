@@ -1,7 +1,5 @@
 package com.jiungkris.jjuproject.handler;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -9,60 +7,57 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.jiungkris.jjuproject.randomchat.MatchingManager;
-import com.jiungkris.jjuproject.randomchat.Ticket;
-import com.jiungkris.jjuproject.vo.MemberVO;
+import com.jiungkris.jjuproject.randomchat.Room;
+import com.jiungkris.jjuproject.randomchat.RoomManager;
 
 public class EchoHandler extends TextWebSocketHandler {
-	private Logger logger = LoggerFactory.getLogger(EchoHandler.class);
-	private Thread t;
+	// This sector is public place.
+	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 	
 	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {		
-
-		Ticket myTicket = new Ticket(session);
-		MatchingManager.collect(myTicket);
-
-		if(myTicket.getStrangerSession() == null) {
-			Runnable r = new MatchingManager().new ThreradMatching(myTicket);
-			t = new Thread(r);
-			t.start();
-			myTicket.setThread(t);
-		}
+	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		// Looking for the room of one person.
+		Room room = RoomManager.findRoomOfOnePerson();
 		
-		logger.info("{} connected", session.getId());
+		if(room != null) {
+			// If you found the one person room, join it.
+			room.join(session);
+			logger.info(session.getId() + " joined and matched.");
+		}
+		else {
+			// But If you didn't, Make a room, join in and wait.
+			room = RoomManager.makeRoom();
+			room.join(session);
+			logger.info(session.getId() + " made a room and joined. room is " + room);
+		}
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		Map<String, Object> map = session.getAttributes();
-		MemberVO vo = (MemberVO) map.get("loginSuccess");
-		
-		Ticket myTicket = MatchingManager.findMyTicketBySession(session);
-		
-		if(myTicket.getStrangerSession() != null) {
-			myTicket.getMySession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
-			myTicket.getStrangerSession().sendMessage(new TextMessage(vo.getId() + " : " + message.getPayload() + "\r\n"));
+		// Find the room where this session is in.
+		Room room = RoomManager.findRoomBySession(session);
+		// Call the people list of the room, and then message them.
+		for(WebSocketSession wsSession : room.getSessionList()) {
+			if(wsSession == session) {
+				wsSession.sendMessage(new TextMessage("You: " + message.getPayload() + "\r\n"));
+			}
+			else {
+				wsSession.sendMessage(new TextMessage("Anonymous: " + message.getPayload() + "\r\n"));
+			}
 		}
-		
-		logger.info("{} received from {}", message.getPayload(), session.getId());
+		logger.info(session.getId() + " sent a message.");
 	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		try {
-			t.interrupt();
-		} catch (Exception e) {
-			e.getStackTrace();
-		}
-		Ticket myTicket = MatchingManager.findMyTicketBySession(session);
+		// Find the room where this session is in.
+		Room room = RoomManager.findRoomBySession(session);
 		
-		if(myTicket.getStrangerSession() != null) {
-			myTicket.getStrangerSession().close();
+		// Remove the Room
+		if(room != null) {
+			room.closeSessions();
+			RoomManager.removeRoom(room);
 		}
-		myTicket = null;
-		MatchingManager.close(session);
-		
-		logger.info("{} disconnected", session.getId());
+		logger.info(session.getId() + " removed the room");
 	}
 }
