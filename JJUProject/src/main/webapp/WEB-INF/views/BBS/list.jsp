@@ -4,6 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>JJProject</title>
 	<jsp:include page="../home.jsp" />
@@ -19,6 +22,7 @@
 		}
 	</style>	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
+	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 </head>
 <body>
 	<br>
@@ -34,10 +38,15 @@
 				<th>Date</th>
 			</tr>
 		
-		<c:forEach var="list" items="${page}">
+		<c:forEach var="list" items="${pages}">
 			<tr>
 				<td>${list.b_no}</td>
-				<td><a href = "/BBS/read?b_no=${list.b_no}">${list.b_title}</a></td>
+				<td>
+					<a href = "/BBS/read?b_no=${list.b_no}">${list.b_title}</a>
+					<c:if test="${list.b_commentCount > 0 }">
+						(${list.b_commentCount})
+					</c:if>
+				</td>
 				<td>${list.b_writer}</td>
 				<td>${list.b_views}</td>
 				<td>${list.b_date}</td>
@@ -76,57 +85,49 @@
 		<form name="currentUsersForm">
 			<input type="text" name="currentUsers" readonly="readonly">
 		</form>
-
-		<select id="idList" name="users" size="20">
+		
+		<select id="idList" name="users" size="20" onchange="enrollSession()">
 			<c:forEach var="idList" items="${idList}">
 				<c:choose>
 					<c:when test="${idList.current == 1 }">
-						<option id="${idList.id}" value="${idList.id}" style="color:blue"> ${idList.name} (${idList.id}) </option>
+						<option id="${idList.id}" value="${idList.name} (${idList.id})" style="color:blue"> ${idList.name} (${idList.id}) </option>
 					</c:when>
 					<c:otherwise>
-						<option id="${idList.id}" value="${idList.id}"> ${idList.name} (${idList.id}) </option>
+						<option id="${idList.id}" value="${idList.name} (${idList.id})"> ${idList.name} (${idList.id}) </option>
 					</c:otherwise>
 				</c:choose>
-				
 			</c:forEach>
 		</select>
+		
+		<!-- Button trigger modal -->
+		<button data-backdrop="static" data-keyboard="false" id="modalBtn" type="button" 
+		class="btn btn-primary" data-toggle="modal" data-target="#messageModal" disabled="disabled">
+		  Message
+		</button>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+		      </div>
+		      <div class="modal-body">
+		        <textarea id="data" rows="20" cols="50" readonly="readonly"></textarea>
+		      </div>
+		      <div class="modal-footer">
+		      	<input type="text" id="message">
+		        <button id="sendBtn" type="button" class="btn btn-primary">Send Message</button>
+		        <button id="closeBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	
-	<script type="text/javascript"> 
+	<script type="text/javascript" src="/resources/js/message.js"></script>
 	
-		function startInterval(seconds, callback) { 
-			callback() 
-			return setInterval(callback, seconds * 1000) 
-		}
-		
-		startInterval(1, function(){
-			$.ajax({ 
-				async: true,
-		        type : "GET",
-		        url : "/current/getCurrentUsers", 
-		        contentType: "application/json; charset=UTF-8",
-		        success : function(data) {
-		        	document.currentUsersForm.currentUsers.value = 'Current Users: ' + data.currentUsers
-		        	
-		        	data.currentUsersList.map(value => {
-		        		if(value.current == 1){
-		        			document.getElementById(value.id).style.color="blue"
-		        		}
-		        		else{
-		        			document.getElementById(value.id).style.color="black"
-		        		}
-		        	})
-		        },
-		        error : function(request, status, error) {
-		        	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error)
-		        }
-		    });
-		})
-		
-		function goPage(pages){
-			location.href = '?' + "page=" + pages;
-		}
-		
-	</script>
+	<!-- Bootstrap javascript -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -42,13 +42,13 @@ public class BBSController {
 		
 		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
 		
-		List<BBSVO> page = new ArrayList<BBSVO>();
-		page = bbsService.paging(offset, paging.getMaxPost());
+		List<BBSVO> pages = new ArrayList<BBSVO>();
+		pages = bbsService.paging(offset, paging.getMaxPost());
 		paging.setNumberOfRecords(bbsService.getCount());
 
 		paging.makePaging();
 
-		model.addAttribute("page", page);
+		model.addAttribute("pages", pages);
 		model.addAttribute("paging", paging);
 		model.addAttribute("idList", idList);
 		

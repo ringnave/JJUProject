@@ -37,17 +37,15 @@
     
     <script type="text/javascript">
     
-		
-
-        function checkCreate()
-        {
+        function checkCreate() {
         	
-        	var title = $("input[name=b_title]").val();
-        	var writer = $("input[name=b_writer]").val();
-        	var pw = $("input[name=b_pw]").val();
-        	var content = $("textarea[name=b_content]").val();
+        	var title = $("input[name=b_title]").val()
+        	var writer = $("input[name=b_writer]").val()
+        	var pw = $("input[name=b_pw]").val()
+        	var content = $("textarea[name=b_content]").val()
         	
-    	    var Pattern = /\s/;
+        	// First whitespace
+    	    var Pattern = /\s/
     	    
         	if(Pattern.test(title) || !document.createInfo.b_title.value){
         		alert("Please enter a tilte")

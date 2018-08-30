@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.jiungkris.jjuproject.mappers.commentMapper">
+	<insert id="insert">
+		INSERT INTO `jjuproject`.`tbl_comment` (`boardNo`, `content`, `id`, `name`) 
+		VALUES (#{boardNo}, #{content}, #{id}, #{name})
+	</insert>
+	
+	<select id="list" resultType="commentVO">
+		SELECT * FROM jjuproject.tbl_comment WHERE boardNo = #{boardNo} ORDER BY commentNo
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM `jjuproject`.`tbl_comment` WHERE (`commentNo` = #{commentNo});
+	</delete>
+	
+	<!-- Paging -->
+	<select id="getCount" resultType="int">
+ 		SELECT count(*) FROM jjuproject.tbl_comment WHERE boardNo = #{boardNo}
+ 	</select>
+ 	
+ 	<select id="paging" resultType="commentVO">
+ 		SELECT * FROM jjuproject.tbl_comment WHERE boardNo = #{boardNo} ORDER BY commentNo LIMIT #{offset}, #{noOfRecords}
+ 	</select>
+</mapper>

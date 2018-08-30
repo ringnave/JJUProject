@@ -6,6 +6,7 @@
 	<typeAliases>
 		<typeAlias type="com.jiungkris.jjuproject.vo.MemberVO" alias="memberVO"/>
 		<typeAlias type="com.jiungkris.jjuproject.vo.BBSVO" alias="bbsVO"/>
+		<typeAlias type="com.jiungkris.jjuproject.vo.CommentVO" alias="commentVO"/>
 	</typeAliases>
 </configuration>
 

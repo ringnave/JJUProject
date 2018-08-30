@@ -10,10 +10,16 @@ public class BBSVO {
 	private String b_writer;
 	private Date b_date;
 	private int b_views;
-	private int b_group;
-	private int b_step;
-	private int b_indent;
-	
+	private int b_commentCount;
+
+	public int getB_commentCount() {
+		return b_commentCount;
+	}
+
+	public void setB_commentCount(int b_commentCount) {
+		this.b_commentCount = b_commentCount;
+	}
+
 	public String getB_pw() {
 		return b_pw;
 	}
@@ -70,35 +76,11 @@ public class BBSVO {
 		this.b_views = b_views;
 	}
 	
-	public int getB_group() {
-		return b_group;
-	}
-	
-	public void setB_group(int b_group) {
-		this.b_group = b_group;
-	}
-	
-	public int getB_step() {
-		return b_step;
-	}
-	
-	public void setB_step(int b_step) {
-		this.b_step = b_step;
-	}
-	
-	public int getB_indent() {
-		return b_indent;
-	}
-	
-	public void setB_indent(int b_indent) {
-		this.b_indent = b_indent;
-	}
-
 	@Override
 	public String toString() {
 		return "BBSVO [b_no=" + b_no + ", b_title=" + b_title + ", b_pw=" + b_pw + ", b_content=" + b_content
-				+ ", b_writer=" + b_writer + ", b_date=" + b_date + ", b_views=" + b_views + ", b_group=" + b_group
-				+ ", b_step=" + b_step + ", b_indent=" + b_indent + "]";
+				+ ", b_writer=" + b_writer + ", b_date=" + b_date + ", b_views=" + b_views + ", b_commentCount="
+				+ b_commentCount + "]";
 	}
 
 }

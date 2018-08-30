@@ -3,6 +3,8 @@ package com.jiungkris.jjuproject.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,5 +40,11 @@ public class MatchingController {
 		}
     	
     	return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/enrollSession", method = RequestMethod.POST)
+	public void enrollSession(@RequestBody String otherId, HttpSession session) {
+		session.setAttribute("otherId", otherId);
 	}
 }

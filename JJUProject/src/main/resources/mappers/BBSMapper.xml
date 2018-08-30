@@ -7,13 +7,11 @@
 <mapper namespace="com.jiungkris.jjuproject.mappers.BBSMapper">
 
     <insert id="create">
- 		INSERT INTO jjuproject.tbl_bbs (b_title, b_pw, b_content, b_writer, b_views, b_group, b_step, b_indent ) 
-    	SELECT #{b_title}, #{b_pw}, #{b_content}, #{b_writer}, 0, max(b_no)+1, 0, 0 
-    	FROM jjuproject.tbl_bbs
+    	INSERT INTO `jjuproject`.`tbl_bbs` (`b_title`, `b_pw`, `b_content`, `b_writer`) VALUES (#{b_title}, #{b_pw}, #{b_content}, #{b_writer});
     </insert>
     
     <select id="list" resultType="bbsVO">
-    	SELECT * FROM jjuproject.tbl_bbs ORDER BY b_group DESC, b_step ASC
+    	SELECT *, (SELECT count(*) FROM jjuproject.tbl_comment WHERE boardNo = b.b_no) AS b_commentCount FROM jjuproject.tbl_bbs b
     </select>
     
     <select id="read" resultType="bbsVO">
@@ -34,7 +32,7 @@
  	</select>
  	
  	<select id="paging" resultType="bbsVO">
- 		SELECT * FROM jjuproject.tbl_bbs ORDER BY b_group DESC, b_step ASC LIMIT #{offset}, #{noOfRecords}
+ 		SELECT *, (SELECT count(*) FROM jjuproject.tbl_comment WHERE boardNo = b.b_no) AS b_commentCount FROM jjuproject.tbl_bbs b ORDER BY b_no DESC LIMIT #{offset}, #{noOfRecords}
  	</select>
  	
  	<!-- Get IDs -->

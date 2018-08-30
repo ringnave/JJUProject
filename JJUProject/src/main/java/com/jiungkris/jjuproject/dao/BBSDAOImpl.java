@@ -54,14 +54,14 @@ public class BBSDAOImpl implements BBSDAO {
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
 		
-		paging = sqlSession.selectList("paging", params);
+		paging = sqlSession.selectList(namespace + "paging", params);
 		
 		return paging;
 	}
 
 	@Override
 	public int getCount() throws Exception {
-		return sqlSession.selectOne("getCount");
+		return sqlSession.selectOne(namespace + "getCount");
 	}
 
 	@Override
