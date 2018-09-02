@@ -2,6 +2,8 @@ package com.jiungkris.jjuproject.handler;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
@@ -11,12 +13,20 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.jiungkris.jjuproject.message.MessageRoom;
 import com.jiungkris.jjuproject.message.MessageRoomManager;
+import com.jiungkris.jjuproject.service.AlarmService;
+import com.jiungkris.jjuproject.service.RecordDialogueService;
 import com.jiungkris.jjuproject.vo.MemberVO;
 
 public class MessageHandler extends TextWebSocketHandler {
 	// This sector is public place.
 	private static Logger logger = LoggerFactory.getLogger(MessageHandler.class);
+	
+	@Inject
+	private RecordDialogueService recordDialogueService;
 		
+	@Inject
+	private AlarmService alarmService;
+	
 	@Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		Map<String,Object> map = session.getAttributes();
@@ -50,11 +60,41 @@ public class MessageHandler extends TextWebSocketHandler {
 		for(Map<String, WebSocketSession> map2 : room.getSessionList()) {
 			if(map2.get(myVo.getId()) == session) {
 				map2.get(myVo.getId()).sendMessage(new TextMessage("You: " + message.getPayload() + "\r\n"));
+				String fullMessage = "You: " + message.getPayload() + "\r\n";
+				
+				// Record to my DB
+				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
+				
+				// If it is not self-recording..
+				if(!otherId.equals(myVo.getId())) {
+					// Record to other DB
+					fullMessage = myVo.getId() + ": " + message.getPayload() + "\r\n";
+					recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
+				}
 			}
 			else {
-				map2.get(otherId).sendMessage(new TextMessage(otherId + ": " + message.getPayload() + "\r\n"));
+				map2.get(otherId).sendMessage(new TextMessage(myVo.getId() + ": " + message.getPayload() + "\r\n"));
+				String fullMessage = otherId + ": " + message.getPayload() + "\r\n";
+				
+				// Record to my DB
+				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
+				// Record to other DB
+				fullMessage = "You: " + message.getPayload() + "\r\n";
+				recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
 			}
 		}
+		
+		// If otherId is not me, record alarm. To hide self-alarm.
+		if(!otherId.equals(myVo.getId())) {
+			String count = alarmService.readAlarmCount(otherId, myVo.getId());
+			int tmp = 0;
+			if(count != null) {
+				tmp = Integer.parseInt(count);
+			}
+			tmp++;
+			alarmService.recordAlarm(otherId, myVo.getId(), tmp);
+		}
+		
 		logger.info(session.getId() + " sent a message.");
     }
     
@@ -69,9 +109,11 @@ public class MessageHandler extends TextWebSocketHandler {
 		
 		// Remove the Room
 		if(room != null) {
-			room.closeSession(myVo.getId());
-			room.closeSession(otherId);
-			MessageRoomManager.removeRoom(room);
+//			room.closeSession(myVo.getId());
+			
+			if(room.getNumberOfPeople() == 0) {
+				MessageRoomManager.removeRoom(room);
+			}
 		}
 		logger.info(session.getId() + " removed the room");
     }

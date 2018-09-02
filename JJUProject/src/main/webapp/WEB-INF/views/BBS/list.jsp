@@ -86,6 +86,7 @@
 			<input type="text" name="currentUsers" readonly="readonly">
 		</form>
 		
+		<!-- User listing -->
 		<select id="idList" name="users" size="20" onchange="enrollSession()">
 			<c:forEach var="idList" items="${idList}">
 				<c:choose>
@@ -96,6 +97,35 @@
 						<option id="${idList.id}" value="${idList.name} (${idList.id})"> ${idList.name} (${idList.id}) </option>
 					</c:otherwise>
 				</c:choose>
+				
+				<script type="text/javascript">
+					function startInterval(seconds, callback) { 
+						callback() 
+						return setInterval(callback, seconds * 1000) 
+					}
+					
+					startInterval(1, function(){
+						// For Alarm Service
+					    $.ajax({ 
+							async: true,
+					        type : "POST",
+					        url : "/getAlarm",
+					        data : ${idList.id}.id,
+					        contentType: "application/json; charset=UTF-8",
+					        success : function(data) {
+					        	if(data.count != null){
+					        		document.getElementById(${idList.id}.id).innerHTML = "${idList.name} (${idList.id}) ["+data.count+"]"
+					        	} else {
+					        		document.getElementById(${idList.id}.id).innerHTML = "${idList.name} (${idList.id})"
+					        	}
+					        },
+					        error : function(request, status, error) {
+
+					        }
+					    })
+					})
+					
+				</script>
 			</c:forEach>
 		</select>
 		
@@ -106,11 +136,12 @@
 		</button>
 		
 		<!-- Modal -->
-		<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ 		<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
+		        <button id="removeBtn" type="button" class="btn btn-secondary" style="background-color: red; border: 1px red solid">Remove Dialogue</button>
 		      </div>
 		      <div class="modal-body">
 		        <textarea id="data" rows="20" cols="50" readonly="readonly"></textarea>
@@ -122,7 +153,7 @@
 		      </div>
 		    </div>
 		  </div>
-		</div>
+		</div> 
 	</div>
 	
 	<script type="text/javascript" src="/resources/js/message.js"></script>

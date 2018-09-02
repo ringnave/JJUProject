@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jiungkris.jjuproject.rsa.RSA;
+import com.jiungkris.jjuproject.service.AlarmService;
 import com.jiungkris.jjuproject.service.CurrentService;
 import com.jiungkris.jjuproject.service.MemberService;
+import com.jiungkris.jjuproject.service.RecordDialogueService;
 import com.jiungkris.jjuproject.vo.MemberVO;
 
 @Controller
@@ -35,7 +37,13 @@ public class MemberController {
     
     @Inject
     CurrentService currentService;
+    
+    @Inject
+    RecordDialogueService recordDialogueService;
 
+    @Inject
+    AlarmService alarmService;
+    
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginForm(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	
@@ -121,13 +129,14 @@ public class MemberController {
     
     @RequestMapping(value = "/deactivate")
     public String deactivate(HttpSession session) {
+    	MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
     	
-    	 MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
+    	// Delete all records of dialogues and alarm function
+    	recordDialogueService.deleteAccountInDB(vo);
+    	alarmService.deleteAccountInDB(vo);
     	
     	memberService.deactivate(vo.getId());
-    	
     	session.invalidate();
-        
         return "redirect:/";
     }
     
@@ -190,6 +199,9 @@ public class MemberController {
         
     	memberService.join(dto);
     	
+    	// Creating column of dialogue records and alarm function
+    	recordDialogueService.insertAccountInDB(dto);
+    	alarmService.insertAccountInDB(dto);
     	return "redirect:/";
     }
     

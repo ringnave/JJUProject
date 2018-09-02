@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.jiungkris.jjuproject.mappers.alarmMapper">
+
+	<insert id="insertRow">
+		INSERT INTO `jjuproject`.`tbl_alarm` (`ids`) VALUES (#{id});
+	</insert>
+	
+	<insert id="insertCol" parameterType="String">
+		ALTER TABLE `jjuproject`.`tbl_alarm` ADD COLUMN ${id} LONGTEXT NULL;
+	</insert>
+	
+	<delete id="deleteRow">
+		DELETE FROM `jjuproject`.`tbl_alarm` WHERE (`ids` = #{id});
+	</delete>
+	
+	<delete id="deleteCol">
+		ALTER TABLE `jjuproject`.`tbl_alarm` DROP COLUMN ${id};
+	</delete>
+	
+	<update id="recordAlarm">
+		UPDATE `jjuproject`.`tbl_alarm` SET ${otherId} = #{count} WHERE (`ids` = #{myId});
+	</update>
+	
+	<select id="readAlarmCount" resultType="String">
+		SELECT ${otherId} FROM jjuproject.tbl_alarm WHERE ids = #{myId};
+	</select>
+	
+	<delete id="removeAlarm">
+		UPDATE `jjuproject`.`tbl_alarm` SET ${otherId} = NULL WHERE (`ids` = #{myId});
+	</delete>
+	
+	<select id="readForList" resultType="hashmap">
+		SELECT * FROM jjuproject.tbl_alarm WHERE ids = #{myId};
+	</select>
+</mapper>

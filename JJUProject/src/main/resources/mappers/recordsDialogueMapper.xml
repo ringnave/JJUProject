@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.jiungkris.jjuproject.mappers.recordsDialogueMapper">
+
+	<insert id="insertRow">
+		INSERT INTO `jjuproject`.`tbl_dialogue` (`ids`) VALUES (#{id});
+	</insert>
+	
+	<insert id="insertCol" parameterType="String">
+		ALTER TABLE `jjuproject`.`tbl_dialogue` ADD COLUMN ${id} LONGTEXT NULL;
+	</insert>
+	
+	<delete id="deleteRow">
+		DELETE FROM `jjuproject`.`tbl_dialogue` WHERE (`ids` = #{id});
+	</delete>
+	
+	<delete id="deleteCol">
+		ALTER TABLE `jjuproject`.`tbl_dialogue` DROP COLUMN ${id};
+	</delete>
+	
+	<update id="recordDialogue">
+		UPDATE `jjuproject`.`tbl_dialogue` SET ${otherId} = CONCAT(COALESCE(${otherId},''), COALESCE(#{message},'')) WHERE (`ids` = #{myId});
+	</update>
+	
+	<select id="readRecord" resultType="String">
+		SELECT ${otherId} FROM jjuproject.tbl_dialogue WHERE ids = #{myId};
+	</select>
+	
+	<delete id="removeRecord">
+		UPDATE `jjuproject`.`tbl_dialogue` SET ${otherId} = NULL WHERE (`ids` = #{myId});
+	</delete>
+	
+</mapper>

@@ -17,8 +17,25 @@ $(document).ready(function() {
 		       return sessionId
 		    }
 		})
+		sock.onopen = onOpen
 		sock.onmessage = onMessage
+		sock.onclose = onClose
 	})
+	
+	$("#removeBtn").click(function() {
+		$.ajax({ 
+			async: true,
+	        type : "POST",
+	        url : "/removeRecord", 
+	        contentType: "application/json; charset=UTF-8",
+	        success : function() {
+	        	$("#data").empty()
+	        },
+	        error : function(request, status, error) {
+	        	alert("onOpen() error")
+	        }
+	    })
+    })
 	
     $("#sendBtn").click(function() {
         sendMessage()
@@ -27,7 +44,24 @@ $(document).ready(function() {
     })
     
     $("#closeBtn").click(function() {
-        sock.close()
+    	var numberOfPerson
+    	
+    	$.ajax({ 
+    		async: true,
+            type : "POST",
+            url : "/getPersonCount",
+            contentType: "application/json; charset=UTF-8",
+            success : function(data){
+            	numberOfPerson = data.count
+            	if(numberOfPerson == '0'){
+            		console.log("socket closed")
+            		sock.close()
+            	}
+            },
+            error : function(request, status, error) {
+            	console.log("getPersonCount error")
+            }
+        })
     })
     
     $(document).keyup(function(event){
@@ -45,12 +79,37 @@ function sendMessage() {
     sock.send($("#message").val())
 }
 
+function onOpen(){
+	$.ajax({ 
+		async: true,
+        type : "POST",
+        url : "/readRecord", 
+        contentType: "application/json; charset=UTF-8",
+        success : function(data) {
+        	$("#data").append(data)
+        },
+        error : function(request, status, error) {
+        	alert("onOpen() error")
+        }
+    })
+}
+
 function onMessage(evt) {
     var data = evt.data
     $("#data").append(data)
     
     var idData = document.getElementById("data"); 
     idData.scrollTop = idData.scrollHeight
+}
+
+function onClose(evt) {
+	$.ajax({ 
+		async: true,
+        type : "POST",
+        url : "/removeAlarm",
+        contentType: "application/json; charset=UTF-8",
+        error : function(request, status, error) {}
+    })
 }
 
 function randomString() {
@@ -84,6 +143,7 @@ function startInterval(seconds, callback) {
 }
 
 startInterval(1, function(){
+	// Just for painting blue on current users.
 	$.ajax({ 
 		async: true,
         type : "GET",

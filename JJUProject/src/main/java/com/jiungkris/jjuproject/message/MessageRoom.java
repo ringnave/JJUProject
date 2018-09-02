@@ -42,6 +42,7 @@ public class MessageRoom {
 		for(Map<String, WebSocketSession> map : sessionList) {
 			try {
 				if(map.get(id) != null) {
+					sessionList.remove(map);
 					map.get(id).close();
 				}
 			} catch (IOException e) {
@@ -51,6 +52,9 @@ public class MessageRoom {
 	}
 
 	public boolean findId(String id) {
+		// Prevent index out of bounds exception
+		if(sessionList.size() == 0) return false;
+		
 		if(sessionList.get(0).get(id) != null) return true;
 		if(sessionList.size() > 1) {
 			if(sessionList.get(1).get(id) != null) return true;
