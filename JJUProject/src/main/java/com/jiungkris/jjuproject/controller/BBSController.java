@@ -81,7 +81,7 @@ public class BBSController {
 	
 	@RequestMapping(value = "/createProcess", method = RequestMethod.POST)
 	public String createProcess(BBSVO dto) {
-		
+		dto.setB_writer(dto.getB_writer() + " (No Account)");
 		try {
 			bbsService.create(dto);
 		} catch (Exception e) {
@@ -147,5 +147,39 @@ public class BBSController {
 		}
 		
 		return "redirect:list";
+	}
+	
+	@RequestMapping(value = "/pass", method = RequestMethod.GET)
+	public String pass(Model model, HttpServletRequest request) {
+		String page = "";
+		String route = request.getParameter("b_type");
+		int no = Integer.parseInt(request.getParameter("b_no"));
+		BBSVO dto = new BBSVO();
+		
+		try {
+			dto = bbsService.read(no);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		switch (route) {
+			case "update":
+				dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
+				model.addAttribute("dto", dto);
+				page = "/BBS/updateForm";
+				break;
+			case "delete":
+				try {
+					bbsService.delete(dto.getB_no());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				page = "redirect:list";
+			default:
+				break;
+		}
+		
+		return page;
 	}
 }

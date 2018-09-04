@@ -57,7 +57,8 @@ public class CommentController {
 		Paging paging = new Paging(currentPageNo, maxComment);
 		
 		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
-		
+		// Error debug
+		if(offset < 0) offset = 0;
 		List<CommentVO> comments = new LinkedList<CommentVO>();
 		comments = commentService.paging(boardNo, offset, paging.getMaxPost());
 		paging.setNumberOfRecords(commentService.getCount(boardNo));

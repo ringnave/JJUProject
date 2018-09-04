@@ -32,8 +32,20 @@
 		</tr>
 	</table>
 	
-	<a href="/BBS/prePasswordCheck?b_type=update&b_no=${read.b_no}">Modify</a>
-	<a href="/BBS/prePasswordCheck?b_type=delete&b_no=${read.b_no}">Delete</a>
+	<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
+	<c:choose>
+		<c:when test="${idName eq read.b_writer}"> <!-- 프리패스 -->
+			<a href="/BBS/pass?b_type=update&b_no=${read.b_no}">Modify</a>
+			<a href="/BBS/pass?b_type=delete&b_no=${read.b_no}">Delete</a>	
+		</c:when>
+		<c:when test="${read.b_writer.indexOf('(No Account)') eq -1}">	
+		</c:when>
+		<c:otherwise>
+			<a href="/BBS/prePasswordCheck?b_type=update&b_no=${read.b_no}">Modify</a>
+			<a href="/BBS/prePasswordCheck?b_type=delete&b_no=${read.b_no}">Delete</a>
+		</c:otherwise>
+	</c:choose>
+	
 	<a href="#" onClick="history.go(-1); return false;">Back</a><br>
 	
 	<!-- Comments -->

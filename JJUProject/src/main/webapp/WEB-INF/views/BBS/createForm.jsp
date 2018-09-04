@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -18,11 +19,25 @@
 				<td><input type="text" name="b_title"></td>
 				
 				<th>Writer</th>
-				<td><input type="text" name="b_writer"></td>
+				<c:choose>
+					<c:when test="${not empty loginSuccess}">
+						<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
+					</c:when>
+					<c:otherwise>
+						<td><input type="text" name="b_writer"></td>
+					</c:otherwise>
+				</c:choose>				
 			</tr>
 			<tr>
-				<th>Password</th>
-				<td><input type="password" name="b_pw"></td>
+				<c:choose>
+					<c:when test="${not empty loginSuccess}">
+						<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
+					</c:when>
+					<c:otherwise>
+						<th>Password</th>
+						<td><input type="password" name="b_pw"></td>
+					</c:otherwise>
+				</c:choose>	
 			</tr>
 			<tr>
 				<th>Content</th>
@@ -36,7 +51,6 @@
 	<a href="/BBS/list">Back</a>
     
     <script type="text/javascript">
-    
         function checkCreate() {
         	
         	var title = $("input[name=b_title]").val()
@@ -45,19 +59,19 @@
         	var content = $("textarea[name=b_content]").val()
         	
         	// First whitespace
-    	    var Pattern = /\s/
+    	    var Pattern = /[^\s]/
     	    
-        	if(Pattern.test(title) || !document.createInfo.b_title.value){
+        	if(!Pattern.test(title) || !document.createInfo.b_title.value){
         		alert("Please enter a tilte")
         		document.createInfo.b_title.focus()
         		return false
         	}
-        	else if(Pattern.test(writer) || !document.createInfo.b_writer.value){
+        	else if(!Pattern.test(writer) || !document.createInfo.b_writer.value){
         		alert("Please enter a writer")
         		document.createInfo.b_writer.focus()
         		return false
         	}
-        	else if(Pattern.test(pw) || !document.createInfo.b_pw.value){
+        	else if(!Pattern.test(pw) || !document.createInfo.b_pw.value){
         		alert("Please enter a password")
         		document.createInfo.b_pw.focus()
         		return false
