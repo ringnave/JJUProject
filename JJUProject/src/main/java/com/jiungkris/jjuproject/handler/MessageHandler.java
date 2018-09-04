@@ -59,8 +59,8 @@ public class MessageHandler extends TextWebSocketHandler {
 		// Call the people list of the room, and then message them.
 		for(Map<String, WebSocketSession> map2 : room.getSessionList()) {
 			if(map2.get(myVo.getId()) == session) {
-				map2.get(myVo.getId()).sendMessage(new TextMessage("You: " + message.getPayload() + "\r\n"));
-				String fullMessage = "You: " + message.getPayload() + "\r\n";
+				map2.get(myVo.getId()).sendMessage(new TextMessage("You: " + message.getPayload() + "<br>"));
+				String fullMessage = "You: " + message.getPayload() + "<br>";
 				
 				// Record to my DB
 				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
@@ -68,18 +68,18 @@ public class MessageHandler extends TextWebSocketHandler {
 				// If it is not self-recording..
 				if(!otherId.equals(myVo.getId())) {
 					// Record to other DB
-					fullMessage = myVo.getId() + ": " + message.getPayload() + "\r\n";
+					fullMessage = myVo.getId() + ": " + message.getPayload() + "<br>";
 					recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
 				}
 			}
 			else {
-				map2.get(otherId).sendMessage(new TextMessage(myVo.getId() + ": " + message.getPayload() + "\r\n"));
-				String fullMessage = otherId + ": " + message.getPayload() + "\r\n";
+				map2.get(otherId).sendMessage(new TextMessage(myVo.getId() + ": " + message.getPayload() + "<br>"));
+				String fullMessage = otherId + ": " + message.getPayload() + "<br>";
 				
 				// Record to my DB
 				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
 				// Record to other DB
-				fullMessage = "You: " + message.getPayload() + "\r\n";
+				fullMessage = "You: " + message.getPayload() + "<br>";
 				recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
 			}
 		}
@@ -109,7 +109,7 @@ public class MessageHandler extends TextWebSocketHandler {
 		
 		// Remove the Room
 		if(room != null) {
-//			room.closeSession(myVo.getId());
+			room.closeSession(myVo.getId()); 
 			
 			if(room.getNumberOfPeople() == 0) {
 				MessageRoomManager.removeRoom(room);

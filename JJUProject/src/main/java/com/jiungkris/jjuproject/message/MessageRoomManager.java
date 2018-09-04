@@ -44,13 +44,16 @@ public class MessageRoomManager {
 	}
 
 	public static MessageRoom findRoomById(String id) {
+		logger.info("findRoomById called!");
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
 			if(room.findId(id)) {
 				myRoom = room;
-				break;
+				return myRoom;
 			}
+			logger.info("This should print once");
 		}
+		logger.info("This should not print");
 		return myRoom;
 	}
 }

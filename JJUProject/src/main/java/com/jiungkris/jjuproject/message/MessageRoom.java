@@ -6,12 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.WebSocketSession;
+
+import com.jiungkris.jjuproject.handler.MessageHandler;
 
 public class MessageRoom {
 	private int roomNumber;
 	private List<Map<String, WebSocketSession>> sessionList = new LinkedList<Map<String, WebSocketSession>>();
-	
+	private static Logger logger = LoggerFactory.getLogger(MessageRoom.class);
 	public MessageRoom(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
@@ -52,10 +56,14 @@ public class MessageRoom {
 	}
 
 	public boolean findId(String id) {
+		logger.info(">>>>>>>>>>>>>>> room ids: " + sessionList);
 		// Prevent index out of bounds exception
 		if(sessionList.size() == 0) return false;
 		
-		if(sessionList.get(0).get(id) != null) return true;
+		if(sessionList.get(0).get(id) != null) {
+			logger.info(">>>>>>>>>>>>>>>>> there's id");
+			return true;
+		}
 		if(sessionList.size() > 1) {
 			if(sessionList.get(1).get(id) != null) return true;
 		}

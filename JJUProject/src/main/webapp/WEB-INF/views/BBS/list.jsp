@@ -20,6 +20,19 @@
 			float: right;
 			width: 50%;
 		}
+		
+		.modal-dialog,
+		.modal-content {
+		    /* 80% of window height */
+		    height: 80%;
+		}
+		
+		.modal-body {
+    		/* 100% = dialog height, 120px = header + footer */
+	    	max-height: calc(100% - 120px);
+    		overflow-y: auto;
+		}
+		
 	</style>	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
@@ -144,7 +157,8 @@
 		        <button id="removeBtn" type="button" class="btn btn-secondary" style="background-color: red; border: 1px red solid">Remove Dialogue</button>
 		      </div>
 		      <div class="modal-body">
-		        <textarea id="data" rows="20" cols="50" readonly="readonly"></textarea>
+		      	<div id="data"></div>
+		      <!-- <textarea id="data" rows="20" cols="50" readonly="readonly"></textarea> -->
 		      </div>
 		      <div class="modal-footer">
 		      	<input type="text" id="message">
@@ -160,5 +174,6 @@
 	
 	<!-- Bootstrap javascript -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	
 </body>
 </html>

@@ -19,7 +19,7 @@ $(document).ready(function() {
 		})
 		sock.onopen = onOpen
 		sock.onmessage = onMessage
-		sock.onclose = onClose
+		sock.onclose = onClose		
 	})
 	
 	$("#removeBtn").click(function() {
@@ -45,25 +45,9 @@ $(document).ready(function() {
     
     $("#closeBtn").click(function() {
     	var numberOfPerson
-    	
-    	$.ajax({ 
-    		async: true,
-            type : "POST",
-            url : "/getPersonCount",
-            contentType: "application/json; charset=UTF-8",
-            success : function(data){
-            	numberOfPerson = data.count
-            	if(numberOfPerson == '0'){
-            		console.log("socket closed")
-            		sock.close()
-            	}
-            },
-            error : function(request, status, error) {
-            	console.log("getPersonCount error")
-            }
-        })
+    	sock.close()
     })
-    
+            
     $(document).keyup(function(event){
         if ( event.keyCode == 13 ) {
             $("#sendBtn").click()
@@ -81,12 +65,17 @@ function sendMessage() {
 
 function onOpen(){
 	$.ajax({ 
-		async: true,
+		async: false,
         type : "POST",
         url : "/readRecord", 
         contentType: "application/json; charset=UTF-8",
         success : function(data) {
         	$("#data").append(data)
+        	
+        	setTimeout(function() {
+        		$( '.modal-body' ).stop().animate( { scrollTop : $('#data').outerHeight() }, 300 )
+        	}, 200);
+        	
         },
         error : function(request, status, error) {
         	alert("onOpen() error")
@@ -97,9 +86,7 @@ function onOpen(){
 function onMessage(evt) {
     var data = evt.data
     $("#data").append(data)
-    
-    var idData = document.getElementById("data"); 
-    idData.scrollTop = idData.scrollHeight
+    $( '.modal-body' ).stop().animate( { scrollTop : $('#data').outerHeight()+data.length*43 })
 }
 
 function onClose(evt) {
@@ -138,7 +125,7 @@ $('#messageModal').on('show.bs.modal', function (event) {
 })
 
 function startInterval(seconds, callback) { 
-	callback() 
+	callback()
 	return setInterval(callback, seconds * 1000) 
 }
 
@@ -151,7 +138,6 @@ startInterval(1, function(){
         contentType: "application/json; charset=UTF-8",
         success : function(data) {
         	document.currentUsersForm.currentUsers.value = 'Current Users: ' + data.currentUsers
-        	
         	data.currentUsersList.map(value => {
         		if(value.current == 1){
         			document.getElementById(value.id).style.color="blue"

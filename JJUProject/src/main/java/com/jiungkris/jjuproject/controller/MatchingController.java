@@ -61,7 +61,7 @@ public class MatchingController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/readRecord", method = RequestMethod.POST)
+	@RequestMapping(value = "/readRecord", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String readRecord(HttpSession session) {
 		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
 		String otherId = (String) session.getAttribute("otherId");
@@ -99,23 +99,5 @@ public class MatchingController {
 		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
 		String otherId = (String) session.getAttribute("otherId");
 		alarmService.removeAlarm(myVo.getId(), otherId);
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/getPersonCount", method = RequestMethod.POST)
-	public Map<Object, Object> getPersonCount(HttpSession session) {
-		Map<Object, Object> map = new HashMap<Object, Object>();
-		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
-		
-		// Find the room where this session is in.
-		MessageRoom room = MessageRoomManager.findRoomById(myVo.getId());
-		
-		// You clicked the close button so I go out of the room.
-		room.closeSession(myVo.getId());
-		String count = String.valueOf(room.getNumberOfPeople());
-
-		map.put("count", count);
-		
-		return map;
 	}
 }
