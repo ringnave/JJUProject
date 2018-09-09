@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.jiungkris.jjuproject.util.TimerForLogout;
  
 /**
  * Handles requests for the application home page.
@@ -49,5 +51,12 @@ public class HomeController {
         map.put("isSignedIn", isSignedIn);
     	
     	return map;
+	}
+    
+    @ResponseBody
+    @RequestMapping(value = "/sessionTimeLogout", method = RequestMethod.POST)
+	public void sessionTimeLogout(HttpSession session) {
+    	TimerForLogout timerForLogout = (TimerForLogout) session.getAttribute("timerForLogout");
+    	if(timerForLogout != null) timerForLogout.setCount(0);
 	}
 }

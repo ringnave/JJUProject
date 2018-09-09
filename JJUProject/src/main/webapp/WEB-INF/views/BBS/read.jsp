@@ -160,6 +160,9 @@
 		            	}
 		            }
 		            $("#commentList").html(output)
+		        },
+		        error: function(){
+		        	console.log("comment page error")
 		        }
 		    })
 		}

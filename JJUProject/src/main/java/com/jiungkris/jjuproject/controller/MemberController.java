@@ -26,6 +26,7 @@ import com.jiungkris.jjuproject.service.AlarmService;
 import com.jiungkris.jjuproject.service.CurrentService;
 import com.jiungkris.jjuproject.service.MemberService;
 import com.jiungkris.jjuproject.service.RecordDialogueService;
+import com.jiungkris.jjuproject.util.TimerForLogout;
 import com.jiungkris.jjuproject.vo.MemberVO;
 
 @Controller
@@ -104,7 +105,9 @@ public class MemberController {
 	    
 	    MemberVO vo = memberService.login(dto);
 	    if ( vo != null ){
-	        session.setAttribute("loginSuccess", vo);
+	    	session.setAttribute("loginSuccess", vo);
+	    	TimerForLogout timerForLogout = new TimerForLogout(session);
+	    	session.setAttribute("timerForLogout", timerForLogout);
 	        currentService.login(vo.getId());
 	        
 	        page = "redirect:/";
@@ -118,11 +121,13 @@ public class MemberController {
     @RequestMapping(value = "/logout")
     public String logout(HttpSession session) {
     	MemberVO vo = (MemberVO) session.getAttribute("loginSuccess");
+    	TimerForLogout timerForLogout = (TimerForLogout) session.getAttribute("timerForLogout");
     	
-    	if(vo != null) {
-    		session.removeAttribute("loginSuccess");
-            currentService.logout(vo.getId());
-    	}
+    	session.removeAttribute("loginSuccess");
+		session.removeAttribute("timerForLogout");
+		timerForLogout.cancel();
+		
+        currentService.logout(vo.getId());
         
     	return "redirect:/";
     }

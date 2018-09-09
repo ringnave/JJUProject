@@ -132,9 +132,7 @@
 					        		document.getElementById(${idList.id}.id).innerHTML = "${idList.name} (${idList.id})"
 					        	}
 					        },
-					        error : function(request, status, error) {
-
-					        }
+					        error : function(request, status, error) {}
 					    })
 					})
 					

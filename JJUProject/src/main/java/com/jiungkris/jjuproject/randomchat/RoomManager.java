@@ -1,5 +1,6 @@
 package com.jiungkris.jjuproject.randomchat;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +32,10 @@ public class RoomManager {
 
 	public static Room findRoomOfOnePerson() {
 		Room onePersonRoom = null;
+		
+		// To make roomList random, use Collection.shuffle
+		Collections.shuffle(roomList);
+		
 		for(Room room : roomList) {
 			if(room.getNumberOfPeople() == 1) {
 				onePersonRoom = room;
