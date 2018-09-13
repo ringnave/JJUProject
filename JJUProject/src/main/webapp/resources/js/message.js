@@ -2,14 +2,18 @@ var sock
 var sessionId
 
 $(document).ready(function() {
+	
 	// When you click the message button, you can get your session.
 	$("#modalBtn").click(function(){
+		
+		
 		if(sessionCheck() == false){
 			alert("You should sign in!")
 			return false
 		}
 		
 		$("#data").empty()
+		$("#message").empty()
 		
 		sessionId = randomString()
 		sock = new SockJS('/message', [], {
@@ -44,7 +48,6 @@ $(document).ready(function() {
     })
     
     $("#closeBtn").click(function() {
-    	var numberOfPerson
     	sock.close()
     })
             
@@ -53,7 +56,12 @@ $(document).ready(function() {
             $("#sendBtn").click()
             return false
         } else if ( event.keyCode == 27 ) {
-            $("#closeBtn").click()
+        	var i = $('.modal-open').size()
+            while(i > -1){
+            	i--
+            	$("#closeBtn").click()
+            }
+        	
             return false
         }
    })
@@ -78,7 +86,8 @@ function onOpen(){
         	
         },
         error : function(request, status, error) {
-        	alert("onOpen() error")
+        	alert("Select Id!")
+        	history.go()
         }
     })
 }

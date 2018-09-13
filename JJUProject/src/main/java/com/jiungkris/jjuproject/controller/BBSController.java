@@ -29,8 +29,10 @@ public class BBSController {
 	
 	@RequestMapping(value="/list")
 	public String list(Model model, HttpServletRequest req) throws Exception {
+		//For sideIds.jsp
 		List<MemberVO> idList = new ArrayList<MemberVO>();
 		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
 		
 		int currentPageNo = 1;
 		int maxPost = 10;
@@ -50,7 +52,7 @@ public class BBSController {
 
 		model.addAttribute("pages", pages);
 		model.addAttribute("paging", paging);
-		model.addAttribute("idList", idList);
+
 		
 		return "/BBS/list";
 	}

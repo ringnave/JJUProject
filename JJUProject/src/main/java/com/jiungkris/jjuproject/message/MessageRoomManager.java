@@ -18,12 +18,13 @@ public class MessageRoomManager {
 		atomicInteger = new AtomicInteger(-1);
 	}
 	
-	public static MessageRoom makeRoom() {
+	public static MessageRoom makeRoom(String targetId) {
 		int roomNumber = atomicInteger.incrementAndGet();
 		MessageRoom room = new MessageRoom(roomNumber);
+		room.setTargetId(targetId);
 		roomList.add(room);
 		
-		logger.info("room list: " + roomList);
+//		logger.info("room list: " + roomList);
 		
 		return room;
 	}
@@ -32,10 +33,10 @@ public class MessageRoomManager {
 		roomList.remove(room);
 	}
 
-	public static MessageRoom findOnePersonRoomById(String id) {
+	public static MessageRoom findOnePersonRoomById(String myId, String otherId) {
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
-			if(room.getNumberOfPeople() == 1 && room.findId(id)) {
+			if(room.getNumberOfPeople() == 1 && room.findId(otherId) && room.getTargetId().equals(myId)) {
 				myRoom = room;
 				break;
 			}
@@ -44,16 +45,16 @@ public class MessageRoomManager {
 	}
 
 	public static MessageRoom findRoomById(String id) {
-		logger.info("findRoomById called!");
+//		logger.info("findRoomById called!");
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
 			if(room.findId(id)) {
 				myRoom = room;
 				return myRoom;
 			}
-			logger.info("This should print once");
+//			logger.info("This should print once");
 		}
-		logger.info("This should not print");
+//		logger.info("This should not print");
 		return myRoom;
 	}
 }

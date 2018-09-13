@@ -112,6 +112,7 @@ public class MemberController {
 	        
 	        page = "redirect:/";
 	    }else {
+	    	session.setAttribute("loginFalse", true);
 	    	page = "redirect:/member/login";
 	    }
 	     

@@ -14,6 +14,16 @@ public class MessageRoom {
 	private int roomNumber;
 	private List<Map<String, WebSocketSession>> sessionList = new LinkedList<Map<String, WebSocketSession>>();
 	private static Logger logger = LoggerFactory.getLogger(MessageRoom.class);
+	private String targetId;
+	
+	public String getTargetId() {
+		return targetId;
+	}
+
+	public void setTargetId(String targetId) {
+		this.targetId = targetId;
+	}
+
 	public MessageRoom(int roomNumber) {
 		this.roomNumber = roomNumber;
 	}
@@ -54,12 +64,12 @@ public class MessageRoom {
 	}
 
 	public boolean findId(String id) {
-		logger.info(">>>>>>>>>>>>>>> room ids: " + sessionList);
+//		logger.info(">>>>>>>>>>>>>>> room ids: " + sessionList);
 		// Prevent index out of bounds exception
 		if(sessionList.size() == 0) return false;
 		
 		if(sessionList.get(0).get(id) != null) {
-			logger.info(">>>>>>>>>>>>>>>>> there's id");
+//			logger.info(">>>>>>>>>>>>>>>>> there's id");
 			return true;
 		}
 		if(sessionList.size() > 1) {

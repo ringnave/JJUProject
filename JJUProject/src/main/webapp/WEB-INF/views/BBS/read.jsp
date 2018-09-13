@@ -4,6 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Read</title>
 	<jsp:include page="../home.jsp" />
@@ -102,28 +105,6 @@
 		        	console.log("getSession error")
 		        }
 		    })
-			
-		    /* JUST FOR BACKUP
-			$.ajax({
-		        type: "get",
-		        url: "/comment/list?b_no=${read.b_no}",
-		        success: function(result){
-		        	var output = '<table border="1">'
-		            for(var i in result){
-		                output += "<tr>"
-		                output += "<td>"+result[i].name+"("+result[i].id+")</td>"
-		                output += "<td>"+result[i].content+"</td>"
-		                output += "<td>"+dateForm(result[i].regDate)+"</td>"
-		                if(myId == result[i].id){
-		                	output += '<td><a href="javascript:commentDelete('+result[i].commentNo+')">delete</a></td>'
-		                }
-		                output += "<tr>"
-		            }
-		            output += "</table>"
-		            $("#commentList").html(output)
-		        }
-		    })
-		    */
 		    
 		    $.ajax({
 		        type: "get",
@@ -213,5 +194,8 @@
 		}
 	</script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/comment.js"></script>
+	
+	<!-- Bootstrap javascript -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

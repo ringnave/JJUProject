@@ -1,5 +1,6 @@
 package com.jiungkris.jjuproject.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,18 @@ public class CurrentController {
     	
     	map.put("currentUsersList", vo);
         map.put("currentUsers", currentUsers);
+    	
+    	return map;
+    }
+    
+    @RequestMapping(value = "/getIdList", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<Object, Object> getIdList() {
+    	Map<Object, Object> map = new HashMap<Object, Object>();
+    	List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers(); 
+    	
+        map.put("idList", idList);
     	
     	return map;
     }

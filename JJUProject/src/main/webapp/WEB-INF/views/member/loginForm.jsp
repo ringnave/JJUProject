@@ -4,9 +4,22 @@
 <%@ page session="true" %>
 <html>
 <head>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Login Page</title>
 	<jsp:include page="../home.jsp" />
+<% 
+	if((boolean)session.getAttribute("loginFalse") == true){
+		session.setAttribute("loginFalse", false);
+%>
+		<script type="text/javascript">
+			alert("Username or Password incorrect");
+		</script>
+<%
+	}
+%>
 </head>
 <body>
 	<h1>Login Page</h1>
@@ -33,5 +46,9 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/prng4.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/rng.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/login.js"></script>
+    
+    <!-- Bootstrap javascript -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
 </body>
 </html>

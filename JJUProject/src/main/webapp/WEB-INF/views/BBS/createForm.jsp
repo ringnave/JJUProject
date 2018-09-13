@@ -4,52 +4,62 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Create</title>
-	<jsp:include page="../home.jsp" />
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
-	<h1>Create</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
 	
-	<form action = "/BBS/createProcess" method = "post" name="createInfo" onsubmit="return checkCreate()"> 
-		<table border="1">
-			<tr>
-				<th>Title</th>
-				<td><input type="text" name="b_title"></td>
-				
-				<th>Writer</th>
-				<c:choose>
-					<c:when test="${not empty loginSuccess}">
-						<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
-					</c:when>
-					<c:otherwise>
-						<td><input type="text" name="b_writer"></td>
-					</c:otherwise>
-				</c:choose>				
-			</tr>
-			<tr>
-				<c:choose>
-					<c:when test="${not empty loginSuccess}">
-						<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
-					</c:when>
-					<c:otherwise>
-						<th>Password</th>
-						<td><input type="password" name="b_pw"></td>
-					</c:otherwise>
-				</c:choose>	
-			</tr>
-			<tr>
-				<th>Content</th>
-				<td colspan="4"><textarea rows="10" cols="55" name="b_content" ></textarea></td>
-			</tr>
-		</table>
+		<h1>Create</h1>
 		
-		<button type="submit">Create</button>
-	</form>
-	 
-	<a href="/BBS/list">Back</a>
-    
+		<form action = "/BBS/createProcess" method = "post" name="createInfo" onsubmit="return checkCreate()"> 
+			<table border="1">
+				<tr>
+					<th>Title</th>
+					<td><input type="text" name="b_title"></td>
+					
+					<th>Writer</th>
+					<c:choose>
+						<c:when test="${not empty loginSuccess}">
+							<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
+						</c:when>
+						<c:otherwise>
+							<td><input type="text" name="b_writer"></td>
+						</c:otherwise>
+					</c:choose>				
+				</tr>
+				<tr>
+					<c:choose>
+						<c:when test="${not empty loginSuccess}">
+							<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
+						</c:when>
+						<c:otherwise>
+							<th>Password</th>
+							<td><input type="password" name="b_pw"></td>
+						</c:otherwise>
+					</c:choose>	
+				</tr>
+				<tr>
+					<th>Content</th>
+					<td colspan="4"><textarea rows="10" cols="55" name="b_content" ></textarea></td>
+				</tr>
+			</table>
+			
+			<button type="submit">Create</button>
+		</form>
+		 
+		<a href="/BBS/list">Back</a>
+	</div>
     <script type="text/javascript">
         function checkCreate() {
         	
@@ -88,5 +98,7 @@
         
     </script>
     
+    <!-- Bootstrap javascript -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -4,6 +4,9 @@
 <%@ page session="true" %>
 <html>
 <head>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	
 	<title>Home</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
@@ -16,8 +19,8 @@
 	
 	<c:choose>
 		<c:when test="${empty loginSuccess}">
-			<a href="/member/login">Sign In</a>
-			<a href="/member/join">Sign Up</a>
+			<a href="/member/login">Sign In</a> &emsp;
+			<a href="/member/join">Sign Up</a> &emsp;
 		</c:when>
 		<c:otherwise>
 			<a href="/member/logout">Sign Out</a>
@@ -46,5 +49,8 @@
 		    })
 		})
 	</script>
+	
+	<!-- Bootstrap javascript -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

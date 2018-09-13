@@ -33,18 +33,18 @@ public class MessageHandler extends TextWebSocketHandler {
 		String otherId = (String)map.get("otherId");
 		MemberVO myVo = (MemberVO) map.get("loginSuccess");
 		
-		MessageRoom room = MessageRoomManager.findOnePersonRoomById(otherId);
+		MessageRoom room = MessageRoomManager.findOnePersonRoomById(myVo.getId(), otherId);
 		
 		if(room != null) {
 			// If you found the one person room, join it.
 			room.join(myVo.getId(), session);
-			logger.info(session.getId() + " joined and matched.");
+//			logger.info(session.getId() + " joined and matched.");
 		}
 		else {
-			// But If you didn't, Make a room, join in and wait.
-			room = MessageRoomManager.makeRoom();
+			// But If you didn't, Make a room, join in and wait. Target is otherId.
+			room = MessageRoomManager.makeRoom(otherId);
 			room.join(myVo.getId(), session);
-			logger.info(session.getId() + " made a room and joined. room is " + room);
+//			logger.info(session.getId() + " made a room and joined. room is " + room);
 		}
     }
 	
@@ -53,6 +53,7 @@ public class MessageHandler extends TextWebSocketHandler {
     	Map<String,Object> map = session.getAttributes();
     	String otherId = (String)map.get("otherId");
 		MemberVO myVo = (MemberVO) map.get("loginSuccess");
+		boolean isRecordOnce = false;
     	
     	// Find the room where this session is in.
 		MessageRoom room = MessageRoomManager.findRoomById(myVo.getId());
@@ -62,25 +63,31 @@ public class MessageHandler extends TextWebSocketHandler {
 				map2.get(myVo.getId()).sendMessage(new TextMessage("You: " + message.getPayload() + "<br>"));
 				String fullMessage = "You: " + message.getPayload() + "<br>";
 				
-				// Record to my DB
-				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
-				
-				// If it is not self-recording..
-				if(!otherId.equals(myVo.getId())) {
-					// Record to other DB
-					fullMessage = myVo.getId() + ": " + message.getPayload() + "<br>";
-					recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
+				if(isRecordOnce == false) {
+					// Record to my DB
+					recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
+					
+					// If it is not self-recording..
+					if(!otherId.equals(myVo.getId())) {
+						// Record to other DB
+						fullMessage = myVo.getId() + ": " + message.getPayload() + "<br>";
+						recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
+					}
+					isRecordOnce = true;
 				}
 			}
 			else {
 				map2.get(otherId).sendMessage(new TextMessage(myVo.getId() + ": " + message.getPayload() + "<br>"));
-				String fullMessage = otherId + ": " + message.getPayload() + "<br>";
+				String fullMessage = "You: " + message.getPayload() + "<br>";
 				
-				// Record to my DB
-				recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
-				// Record to other DB
-				fullMessage = "You: " + message.getPayload() + "<br>";
-				recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
+				if(isRecordOnce == false) {
+					// Record to my DB
+					recordDialogueService.recordDialogue(myVo.getId(), otherId, fullMessage);
+					// Record to other DB
+					fullMessage = myVo.getId() + ": " + message.getPayload() + "<br>";
+					recordDialogueService.recordDialogue(otherId, myVo.getId(), fullMessage);
+					isRecordOnce = true;
+				}
 			}
 		}
 		
@@ -95,7 +102,7 @@ public class MessageHandler extends TextWebSocketHandler {
 			alarmService.recordAlarm(otherId, myVo.getId(), tmp);
 		}
 		
-		logger.info(session.getId() + " sent a message.");
+//		logger.info(session.getId() + " sent a message.");
     }
     
     @Override
@@ -115,6 +122,6 @@ public class MessageHandler extends TextWebSocketHandler {
 				MessageRoomManager.removeRoom(room);
 			}
 		}
-		logger.info(session.getId() + " removed the room");
+//		logger.info(session.getId() + " removed the room");
     }
 }

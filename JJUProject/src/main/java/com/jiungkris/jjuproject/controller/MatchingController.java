@@ -98,6 +98,6 @@ public class MatchingController {
 	public void removeAlarm(HttpSession session) {
 		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
 		String otherId = (String) session.getAttribute("otherId");
-		alarmService.removeAlarm(myVo.getId(), otherId);
+		if(myVo != null && otherId != null) alarmService.removeAlarm(myVo.getId(), otherId);
 	}
 }
