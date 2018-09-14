@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jiungkris.jjuproject.message.MessageRoom;
-import com.jiungkris.jjuproject.message.MessageRoomManager;
 import com.jiungkris.jjuproject.randomchat.Room;
 import com.jiungkris.jjuproject.randomchat.RoomManager;
 import com.jiungkris.jjuproject.service.AlarmService;
@@ -65,6 +63,9 @@ public class MatchingController {
 	public String readRecord(HttpSession session) {
 		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
 		String otherId = (String) session.getAttribute("otherId");
+		
+		if(myVo == null || otherId.equals(null)) return null;
+		
 		return recordDialogueService.readRecord(myVo.getId(), otherId);
 	}
 	

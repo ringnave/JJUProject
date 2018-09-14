@@ -11,15 +11,27 @@
 	<title>Random Chat</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 	<script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
-	<jsp:include page="home.jsp" />
 </head>
 <body>
-	<br>
-	<a href="javascript:history.back()" id="back">Back</a> <br>
-	<textarea id="data" rows="30" cols="70" readonly="readonly"></textarea> <br>
-	<input type="text" id="message" disabled="disabled" />
-	<input type="button" id="sendBtn" value="Start"/>
-	<input type="hidden" id="closeBtn" value="Close"/>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="home.jsp" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-9">
+				<br>
+				<a href="javascript:history.back()" id="back">Back</a> <br>
+				<textarea id="data" rows="30" cols="70" readonly="readonly"></textarea> <br>
+				<input type="text" id="message" disabled="disabled" />
+				<input type="button" id="sendBtn" value="Start"/>
+				<input type="hidden" id="closeBtn" value="Close"/>
+			</div>
+		</div>
+	</div>
+	
     	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/chat.js"></script>
 	

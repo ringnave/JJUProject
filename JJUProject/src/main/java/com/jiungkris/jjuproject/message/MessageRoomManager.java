@@ -36,6 +36,9 @@ public class MessageRoomManager {
 	public static MessageRoom findOnePersonRoomById(String myId, String otherId) {
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
+			logger.info("room.getNumberOfPeople() == 1 : " + (room.getNumberOfPeople() == 1));
+			logger.info("room.findId(" + otherId +") :" + room.findId(otherId));
+			logger.info("room.getTargetId().equals("+myId+") : " + room.getTargetId().equals(myId));
 			if(room.getNumberOfPeople() == 1 && room.findId(otherId) && room.getTargetId().equals(myId)) {
 				myRoom = room;
 				break;

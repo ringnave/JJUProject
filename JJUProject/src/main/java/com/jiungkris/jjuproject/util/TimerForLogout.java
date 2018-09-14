@@ -18,7 +18,11 @@ public class TimerForLogout {
 			@Override
 			public void run() {
 				if(count >= 3) {
-					session.invalidate();
+					try {
+						session.invalidate();
+					} catch (Exception e) {
+						e.getStackTrace();
+					}
 					timer.cancel();
 				}
 				count++;

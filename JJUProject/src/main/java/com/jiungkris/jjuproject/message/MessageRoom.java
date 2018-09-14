@@ -56,6 +56,7 @@ public class MessageRoom {
 				if(map.get(id) != null) {
 					sessionList.remove(map);
 					map.get(id).close();
+					logger.info("left session: " + sessionList);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

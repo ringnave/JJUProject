@@ -1,3 +1,16 @@
+<%--
+To use this page, you should add this code below to the controller that you want.
+
+	//For sideIds.jsp
+	List<MemberVO> idList = new ArrayList<MemberVO>();
+	idList = currentService.getCurrentUsers();
+	model.addAttribute("idList", idList);
+	
+Add this code below to jsp file that you want to show this.
+	
+	<jsp:include page="../sideIds.jsp" />
+--%>
+
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -44,7 +57,7 @@
 					<option id="${idList.id}" value="${idList.name} (${idList.id})"> ${idList.name} (${idList.id}) </option>
 				</c:otherwise>
 			</c:choose>
-			
+
 			<script type="text/javascript">
 				function isMobile() {
 				    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);

@@ -14,7 +14,6 @@
 	<title>JJProject</title>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
-	<!-- <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>   -->
 </head>
 <body>
 	<div class="container">
@@ -86,17 +85,10 @@
 		    <dir class="col">
  		    	<jsp:include page="../sideIds.jsp" /> 
 		    </dir>
-		    
-
 	  	</div>
 	</div>
- 
-	
-	
-	
 	
 	<!-- Bootstrap javascript -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	
 </body>
 </html>

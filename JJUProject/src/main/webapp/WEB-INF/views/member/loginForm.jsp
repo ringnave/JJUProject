@@ -9,7 +9,6 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Login Page</title>
-	<jsp:include page="../home.jsp" />
 <% 
 	if((boolean)session.getAttribute("loginFalse") == true){
 		session.setAttribute("loginFalse", false);
@@ -22,24 +21,41 @@
 %>
 </head>
 <body>
-	<h1>Login Page</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-9">
+				<h1>Login Page</h1>
+				
+				<table border="1">
+					<tr><td><input type="text" id="id" placeholder="Username"></td></tr>
+					<tr><td><input type="password" id="pw" placeholder="Password"></td></tr>
+				</table>
+				
+				<input type="hidden" id="rsaPublicKeyModulus" value="<%=request.getAttribute("publicKeyModulus") %>" />
+			    <input type="hidden" id="rsaPublicKeyExponent" value="<%=request.getAttribute("publicKeyExponent") %>" />
+				
+				<a href="<%=request.getContextPath()%>/member/login" onclick="checkLogin(); return false;">Sign In</a>
+				
+				<form action = '<c:url value="/member/loginProcess" />' method = "post" id="loginInfo" style="display: none;"> 
+					<input type="hidden" name="id" id="id" >
+					<input type="hidden" name="pw" id="pw" >
+			    </form>
+			    
+				<a href="javascript:history.back();">Back</a>
+			</div>
+			
+			<div class="col">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
+	</div>
 	
-	<table border="1">
-		<tr><td><input type="text" id="id" placeholder="Username"></td></tr>
-		<tr><td><input type="password" id="pw" placeholder="Password"></td></tr>
-	</table>
-	
-	<input type="hidden" id="rsaPublicKeyModulus" value="<%=request.getAttribute("publicKeyModulus") %>" />
-    <input type="hidden" id="rsaPublicKeyExponent" value="<%=request.getAttribute("publicKeyExponent") %>" />
-	
-	<a href="<%=request.getContextPath()%>/member/login" onclick="checkLogin(); return false;">Sign In</a>
-	
-	<form action = '<c:url value="/member/loginProcess" />' method = "post" id="loginInfo" style="display: none;"> 
-		<input type="hidden" name="id" id="id" >
-		<input type="hidden" name="pw" id="pw" >
-    </form>
-    
-	<a href="javascript:history.back();">Back</a>
 	
 	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/jsbn.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/rsa/rsa.js"></script>

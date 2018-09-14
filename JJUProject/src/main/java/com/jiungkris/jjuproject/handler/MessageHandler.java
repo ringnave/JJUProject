@@ -38,13 +38,13 @@ public class MessageHandler extends TextWebSocketHandler {
 		if(room != null) {
 			// If you found the one person room, join it.
 			room.join(myVo.getId(), session);
-//			logger.info(session.getId() + " joined and matched.");
+			logger.info(session.getId() + " joined and matched.");
 		}
 		else {
 			// But If you didn't, Make a room, join in and wait. Target is otherId.
 			room = MessageRoomManager.makeRoom(otherId);
 			room.join(myVo.getId(), session);
-//			logger.info(session.getId() + " made a room and joined. room is " + room);
+			logger.info(session.getId() + " made a room and joined. room is " + room);
 		}
     }
 	
@@ -102,7 +102,7 @@ public class MessageHandler extends TextWebSocketHandler {
 			alarmService.recordAlarm(otherId, myVo.getId(), tmp);
 		}
 		
-//		logger.info(session.getId() + " sent a message.");
+		logger.info(session.getId() + " sent a message.");
     }
     
     @Override
@@ -116,12 +116,15 @@ public class MessageHandler extends TextWebSocketHandler {
 		
 		// Remove the Room
 		if(room != null) {
+			// It's like making back-door.
+			room.setTargetId(myVo.getId());
 			room.closeSession(myVo.getId()); 
 			
 			if(room.getNumberOfPeople() == 0) {
 				MessageRoomManager.removeRoom(room);
+				logger.info(session.getId() + " removed the room");
 			}
 		}
-//		logger.info(session.getId() + " removed the room");
+		
     }
 }

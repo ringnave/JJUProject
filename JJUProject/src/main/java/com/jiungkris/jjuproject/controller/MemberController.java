@@ -5,7 +5,9 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +49,11 @@ public class MemberController {
     AlarmService alarmService;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginForm(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public String loginForm(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    	//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
     	
     	//rsa encode start
     	RSA rsa = new RSA();
@@ -67,8 +74,6 @@ public class MemberController {
         
         request.setAttribute("publicKeyModulus", publicKeyModulus);
         request.setAttribute("publicKeyExponent", publicKeyExponent);
-        
-        request.getRequestDispatcher("/WEB-INF/views/member/loginForm.jsp").forward(request, response);
         //rsa encode end
     	
         return "member/loginForm";
@@ -147,7 +152,11 @@ public class MemberController {
     }
     
     @RequestMapping(value = "/join")
-    public String join(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String join(Model model, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	//For sideIds.jsp
+    	List<MemberVO> idList = new ArrayList<MemberVO>();
+    	idList = currentService.getCurrentUsers();
+    	model.addAttribute("idList", idList);
     	
     	//rsa encode start
     	RSA rsa = new RSA();
@@ -168,8 +177,6 @@ public class MemberController {
         
         request.setAttribute("publicKeyModulus", publicKeyModulus);
         request.setAttribute("publicKeyExponent", publicKeyExponent);
-        
-        request.getRequestDispatcher("/WEB-INF/views/member/joinForm.jsp").forward(request, response);
         //rsa encode end
         
     	return "member/joinForm";
