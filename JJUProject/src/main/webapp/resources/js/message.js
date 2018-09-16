@@ -146,7 +146,7 @@ startInterval(1, function(){
         url : "/current/getCurrentUsers", 
         contentType: "application/json; charset=UTF-8",
         success : function(data) {
-        	document.currentUsersForm.currentUsers.value = 'Current Users: ' + data.currentUsers
+        	document.currentUsersForm.currentUsers.value = data.currentUsers
         	data.currentUsersList.map(value => {
         		if(value.current == 1){
         			document.getElementById(value.id).style.color="blue"

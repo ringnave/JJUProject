@@ -8,36 +8,53 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Update Form</title>
-	<jsp:include page="../home.jsp" />
 </head>
 <body>
-	<h1>Update Form</h1>
-	
-	<form action = "/BBS/updateProcess" method = "post"> 
-		<input type="hidden" name="b_no" value="${dto.b_no}">
-		<input type="hidden" name="b_views" value="${dto.b_views}">
-		<table border="1">
-			<tr>
-				<th>Title</th>
-				<td><input type="text" name="b_title" value="${dto.b_title}"></td>
-				
-				<th>Writer</th>
-				<td><input type="text" name="b_writer" value="${dto.b_writer}"></td>
-			</tr>
-			<tr>
-				<th>Password</th>
-				<td><input type="password" name="b_pw" value="${dto.b_pw}"></td>
-			</tr>
-			<tr>
-				<th>Content</th>
-				<td colspan="4"><textarea rows="10" cols="55" name="b_content">${dto.b_content}</textarea></td>
-			</tr>
-		</table>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
 		
-		<input type="submit" value="Modify">
-	</form>
-	 
-	<a href="javascript:history.back();">Back</a>
+		<div class="row">
+			<div class="col-9">
+				<h1>Update Form</h1>
+				
+				<form action = "/BBS/updateProcess" method = "post"> 
+					<input type="hidden" name="b_no" value="${dto.b_no}">
+					<input type="hidden" name="b_views" value="${dto.b_views}">
+					<table border="1">
+						<tr>
+							<th>Title</th>
+							<td><input type="text" name="b_title" value="${dto.b_title}"></td>
+							
+							<th>Writer</th>
+							<td><input type="text" name="b_writer" value="${dto.b_writer}"></td>
+						</tr>
+						<tr>
+							<th>Password</th>
+							<td><input type="password" name="b_pw" value="${dto.b_pw}"></td>
+						</tr>
+						<tr>
+							<th>Content</th>
+							<td colspan="4"><textarea rows="10" cols="55" name="b_content">${dto.b_content}</textarea></td>
+						</tr>
+					</table>
+					
+					<input type="submit" value="Modify">
+				</form>
+				 
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+			</div>
+
+			<div class="col" style="margin-top: 16px;">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
+	</div>
+
+	
     
     <!-- Bootstrap javascript -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

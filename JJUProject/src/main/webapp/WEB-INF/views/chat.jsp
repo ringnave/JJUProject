@@ -22,12 +22,12 @@
 		
 		<div class="row">
 			<div class="col-9">
-				<br>
-				<a href="javascript:history.back()" id="back">Back</a> <br>
-				<textarea id="data" rows="30" cols="70" readonly="readonly"></textarea> <br>
-				<input type="text" id="message" disabled="disabled" />
-				<input type="button" id="sendBtn" value="Start"/>
-				<input type="hidden" id="closeBtn" value="Close"/>
+				<h1>Random Chat</h1>
+				<textarea id="data" rows="25" cols="60" readonly="readonly" class="form-control col-sm-5" style="margin-bottom: 5px;background: white"></textarea>
+				<input type="text" id="message" disabled="disabled" class="btn btn-outline-primary" style="width: 344px;"/>
+				<input type="button" id="sendBtn" class="btn btn-primary" value="Start"/>
+				<input type="hidden" id="closeBtn" class="btn btn-danger" value="Close"/>
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
 			</div>
 		</div>
 	</div>

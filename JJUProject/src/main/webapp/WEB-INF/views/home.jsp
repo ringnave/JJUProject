@@ -11,24 +11,45 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
-	<a href="/"><h1>Home</h1></a>
-
-	<c:if test="${not empty loginSuccess}">
-		${loginSuccess.id} (${loginSuccess.name}) is online.
-	</c:if>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="background-color: #e3f2fd;">
+	  <a class="navbar-brand" href="/">Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarText">
+	    <ul class="navbar-nav mr-auto">
+	    	<c:choose>
+				<c:when test="${empty loginSuccess}">
+					<li class="nav-item">
+				    	<a class="nav-link" href="/member/login">Sign In</a>
+				    </li>
+				    <li class="nav-item">
+				    	<a class="nav-link" href="/member/join">Sign Up</a>
+				    </li>
+				</c:when>
+				<c:otherwise>
+					<li class="nav-item">
+				    	<a class="nav-link" href="/member/logout">Sign Out</a>
+				    </li>
+				    <li class="nav-item">
+				    	<a class="nav-link" href="/member/deactivate">Deactivate Account</a>
+				    </li>
+				</c:otherwise>
+			</c:choose>
+		
+			<li class="nav-item">
+				<a class="nav-link" href="/chat">Random Chat</a>
+			</li>
+	    </ul>
+	    <span class="navbar-text" style="color:white">
+	    	<c:if test="${not empty loginSuccess}">
+				${loginSuccess.id} (${loginSuccess.name}) is online.
+			</c:if>
+	    </span>
+	  </div>
+	</nav>	
 	
-	<c:choose>
-		<c:when test="${empty loginSuccess}">
-			<a href="/member/login">Sign In</a> &emsp;
-			<a href="/member/join">Sign Up</a> &emsp;
-		</c:when>
-		<c:otherwise>
-			<a href="/member/logout">Sign Out</a>
-			<a href="/member/deactivate">Deactivate Account</a>
-		</c:otherwise>
-	</c:choose>
 	
-	<a href="/chat">Random Chat</a>
 	
 	<script type="text/javascript">
 		// ajax로 1초마다 시간변수를 초기화 하는 신호를 보냄. 서버에서는 시간이 지날수록 감소시키는 함수를 만듦, 시간이 지나버리면 로그아웃해버림.

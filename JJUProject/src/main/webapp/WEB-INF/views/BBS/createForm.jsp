@@ -20,46 +20,55 @@
 			</div>
 		</div>
 	
-		<h1>Create</h1>
-		
-		<form action = "/BBS/createProcess" method = "post" name="createInfo" onsubmit="return checkCreate()"> 
-			<table border="1">
-				<tr>
-					<th>Title</th>
-					<td><input type="text" name="b_title"></td>
+		<div class="row">
+			<div class="col-9">
+				<h1>Create</h1>
+				
+				<form action = "/BBS/createProcess" method = "post" name="createInfo" onsubmit="return checkCreate()"> 
+					<table border="1">
+						<tr>
+							<th>Title</th>
+							<td><input type="text" name="b_title"></td>
+							
+							<th>Writer</th>
+							<c:choose>
+								<c:when test="${not empty loginSuccess}">
+									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
+								</c:when>
+								<c:otherwise>
+									<td><input type="text" name="b_writer"></td>
+								</c:otherwise>
+							</c:choose>				
+						</tr>
+						<tr>
+							<c:choose>
+								<c:when test="${not empty loginSuccess}">
+									<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
+								</c:when>
+								<c:otherwise>
+									<th>Password</th>
+									<td><input type="password" name="b_pw"></td>
+								</c:otherwise>
+							</c:choose>	
+						</tr>
+						<tr>
+							<th>Content</th>
+							<td colspan="4"><textarea rows="10" cols="55" name="b_content" ></textarea></td>
+						</tr>
+					</table>
 					
-					<th>Writer</th>
-					<c:choose>
-						<c:when test="${not empty loginSuccess}">
-							<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
-						</c:when>
-						<c:otherwise>
-							<td><input type="text" name="b_writer"></td>
-						</c:otherwise>
-					</c:choose>				
-				</tr>
-				<tr>
-					<c:choose>
-						<c:when test="${not empty loginSuccess}">
-							<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
-						</c:when>
-						<c:otherwise>
-							<th>Password</th>
-							<td><input type="password" name="b_pw"></td>
-						</c:otherwise>
-					</c:choose>	
-				</tr>
-				<tr>
-					<th>Content</th>
-					<td colspan="4"><textarea rows="10" cols="55" name="b_content" ></textarea></td>
-				</tr>
-			</table>
-			
-			<button type="submit">Create</button>
-		</form>
-		 
-		<a href="/BBS/list">Back</a>
+					<button type="submit">Create</button>
+				</form>
+				 
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+			</div>
+
+			<div class="col" style="margin-top: 16px;">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
 	</div>
+	
     <script type="text/javascript">
         function checkCreate() {
         	

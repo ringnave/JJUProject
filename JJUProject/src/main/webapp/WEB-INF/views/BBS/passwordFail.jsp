@@ -8,12 +8,27 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Password Fail</title>
-	<jsp:include page="../home.jsp" />
 </head>
 <body>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-9">
+				<h1>Password Fail</h1>
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+			</div>
 
-	<h1>Password Fail</h1>
-	<a href="javascript:history.back();">Back</a>
+			<div class="col" style="margin-top: 16px;">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
+	</div>
+	
 
 	<!-- Bootstrap javascript -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

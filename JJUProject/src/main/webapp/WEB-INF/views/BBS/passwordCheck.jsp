@@ -10,21 +10,37 @@
 	<title>Update Check</title>
 </head>
 <body>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-9">
+				<h1>
+					Password Check
+				</h1>
+				
+				<form action = "/BBS/passwordProcess" method = "post"> 
+					<input type="hidden" name="b_no" value="${b_no}">
+					<input type="hidden" name="b_type" value="${b_type}">
+					<table border="1">
+						<tr><td><input type="password" name="b_pw" placeholder="Your Password"></td></tr>
+						<tr><td><input type="submit" value="Confirm"></td></tr>
+					</table>
+			    </form>
+				
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+			</div>
 
-	<h1>
-		Password Check
-	</h1>
+			<div class="col" style="margin-top: 16px;">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
+	</div>
 	
-	<form action = "/BBS/passwordProcess" method = "post"> 
-		<input type="hidden" name="b_no" value="${b_no}">
-		<input type="hidden" name="b_type" value="${b_type}">
-		<table border="1">
-			<tr><td><input type="password" name="b_pw" placeholder="Your Password"></td></tr>
-			<tr><td><input type="submit" value="Confirm"></td></tr>
-		</table>
-    </form>
-	
-	<a href="javascript:history.back();">Back</a>
 	
 	<!-- Bootstrap javascript -->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

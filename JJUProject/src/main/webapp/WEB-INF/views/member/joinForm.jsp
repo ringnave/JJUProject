@@ -23,21 +23,21 @@
 			<div class="col-9">
 				<h1>Join Page</h1>
 		 
-				<table border="1">
+				<table>
 					<tr>
-						<td><input type="text" name="id" id="id" placeholder="Your Username (3~20 characters)"></td>
-						<td><input type="button" value="Username check" onclick="usernameCheck()"></td>
+						<td><input type="text" name="id" id="id" placeholder="Your Username (3~20 characters)" class="form-control" style="width: 260px;"></td>
+						<td><input type="button" value="Username check" onclick="usernameCheck()" class="btn btn-warning"></td>
 					</tr>
-					<tr><td><input type="password" id="pw" placeholder="Your Password (6~20 characters)"></td></tr>
-					<tr><td><input type="text" id="name" placeholder="Your Name (3~20 characters)"></td></tr>
-					<tr><td><input type="text" id="email" placeholder="Your Email (xxx@xxx.xxx)"></td></tr>
-					<tr><td><input type="text" id="phone" placeholder="Your Phone (xxx-xxxx-xxxx)"></td></tr>
+					<tr><td><input type="password" id="pw" placeholder="Your Password (6~20 characters)" class="form-control" style="width: 260px;"></td></tr>
+					<tr><td><input type="text" id="name" placeholder="Your Name (3~20 characters)" class="form-control" style="width: 260px;"></td></tr>
+					<tr><td><input type="text" id="email" placeholder="Your Email (xxx@xxx.xxx)" class="form-control" style="width: 260px;"></td></tr>
+					<tr><td><input type="text" id="phone" placeholder="Your Phone (xxx-xxxx-xxxx)" class="form-control" style="width: 260px;margin-bottom: 5px;"></td></tr>
 				</table>
 				
 				<input type="hidden" id="rsaPublicKeyModulus" value="<%=request.getAttribute("publicKeyModulus") %>" />
 			    <input type="hidden" id="rsaPublicKeyExponent" value="<%=request.getAttribute("publicKeyExponent") %>" />
 				
-				<a href="<%=request.getContextPath()%>/member/join" onclick="checkJoin(); return false;">Sign In</a>
+				<a href="<%=request.getContextPath()%>/member/join" class="btn btn-primary" onclick="checkJoin(); return false;">Sign In</a>
 				
 				<form action = "/member/joinProcess" method = "post" id="joinInfo" name="joinInfo" style="display: none;"> 
 					<input type="hidden" id="id" name="id" value="" >
@@ -47,10 +47,10 @@
 					<input type="hidden" id="phone" name="phone" value="" >
 			    </form>
 			    
-			    <a href="javascript:history.back();">Back</a>
+			    <a href="javascript:history.back();" class="btn btn-secondary">Back</a>
 			</div>
 		
-			<div class="col">
+			<div class="col" style="margin-top: 16px;">
 				<jsp:include page="../sideIds.jsp" />
 			</div>
 		</div>

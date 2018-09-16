@@ -43,11 +43,16 @@ Add this code below to jsp file that you want to show this.
 </head>
 <body>
 	<form name="currentUsersForm">
-		<input type="text" name="currentUsers" readonly="readonly">
+		<div class="input-group mb-3">
+	  		<div class="input-group-prepend">
+	    		<span class="input-group-text" id="basic-addon1">Current Users</span>
+	  		</div>
+			<input type="text" class="form-control" name="currentUsers" readonly="readonly" style="background: white; text-align: center">
+		</div>
 	</form>
 		
 	<!-- User listing --> 
-	<select id="idList" name="users" size="20" onchange="enrollSession()" class="custom-select">
+	<select id="idList" name="users" size="22" onchange="enrollSession()" class="custom-select">
 		<c:forEach var="idList" items="${idList}">
 			<c:choose>
 				<c:when test="${idList.current == 1 }">
@@ -119,7 +124,7 @@ Add this code below to jsp file that you want to show this.
 
 	<!-- Button trigger modal -->
 	<button data-backdrop="static" data-keyboard="false" id="modalBtn" type="button" 
-	class="btn btn-primary" data-toggle="modal" data-target="#messageModal" disabled="disabled">
+	class="btn btn-primary" data-toggle="modal" data-target="#messageModal" disabled="disabled" style="width: 255px;">
 	  Message
 	</button>
 	

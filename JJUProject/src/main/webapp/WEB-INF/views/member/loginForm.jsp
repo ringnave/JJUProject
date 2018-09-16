@@ -10,7 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Login Page</title>
 <% 
-	if((boolean)session.getAttribute("loginFalse") == true){
+	if(session.getAttribute("loginFalse") == null || (boolean)session.getAttribute("loginFalse") == true){
 		session.setAttribute("loginFalse", false);
 %>
 		<script type="text/javascript">
@@ -32,25 +32,24 @@
 			<div class="col-9">
 				<h1>Login Page</h1>
 				
-				<table border="1">
-					<tr><td><input type="text" id="id" placeholder="Username"></td></tr>
-					<tr><td><input type="password" id="pw" placeholder="Password"></td></tr>
-				</table>
+				<input type="text" id="id" placeholder="Username" class="form-control" style="width: 226px;margin-bottom: 5px;">
+				<input type="password" id="pw" placeholder="Password" class="form-control" style="width: 226px;margin-bottom: 5px;">
+				
 				
 				<input type="hidden" id="rsaPublicKeyModulus" value="<%=request.getAttribute("publicKeyModulus") %>" />
 			    <input type="hidden" id="rsaPublicKeyExponent" value="<%=request.getAttribute("publicKeyExponent") %>" />
 				
-				<a href="<%=request.getContextPath()%>/member/login" onclick="checkLogin(); return false;">Sign In</a>
+				<a href="<%=request.getContextPath()%>/member/login" class="btn btn-primary" onclick="checkLogin(); return false;">Sign In</a>
 				
 				<form action = '<c:url value="/member/loginProcess" />' method = "post" id="loginInfo" style="display: none;"> 
 					<input type="hidden" name="id" id="id" >
 					<input type="hidden" name="pw" id="pw" >
 			    </form>
 			    
-				<a href="javascript:history.back();">Back</a>
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
 			</div>
 			
-			<div class="col">
+			<div class="col" style="margin-top: 16px;">
 				<jsp:include page="../sideIds.jsp" />
 			</div>
 		</div>

@@ -25,60 +25,64 @@
 
 		<div class="row">
 		    <div class="col-9">
-		    	<br>
 				<div id="content">
 					<h1>BBS</h1>
 					
-					<table border="1">
-						<tr>
-							<th>No</th>
-							<th>Title</th>
-							<th>Writer</th>
-							<th>Views</th>
-							<th>Date</th>
-						</tr>
-					
-					<c:forEach var="list" items="${pages}">
-						<tr>
-							<td>${list.b_no}</td>
-							<td>
-								<a href = "/BBS/read?b_no=${list.b_no}">${list.b_title}</a>
-								<c:if test="${list.b_commentCount > 0 }">
-									(${list.b_commentCount})
-								</c:if>
-							</td>
-							<td>${list.b_writer}</td>
-							<td>${list.b_views}</td>
-							<td>${list.b_date}</td>
-						</tr>	
-					</c:forEach>
-					
+					<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th scope="col" style="width: 46px;">No</th>
+								<th scope="col" style="width: 336px;">Title</th>
+								<th scope="col" style="width: 136px;">Writer</th>
+								<th scope="col" style="width: 66px;">Views</th>
+								<th scope="col" style="width: 240px;">Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="list" items="${pages}">
+								<tr>
+									<td>${list.b_no}</td>
+									<td>
+										<a href = "/BBS/read?b_no=${list.b_no}">${list.b_title}</a>
+										<c:if test="${list.b_commentCount > 0 }">
+											(${list.b_commentCount})
+										</c:if>
+									</td>
+									<td>${list.b_writer}</td>
+									<td>${list.b_views}</td>
+									<td>${list.b_date}</td>
+								</tr>	
+							</c:forEach>
+						</tbody>
 					</table>
 					
-					<c:choose>
-						<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">
-							<c:if test="${paging.currentPageNo gt 5}">
-								<a href="javascript:goPage(${paging.prevPageNo})">prev</a>
-							</c:if>
-							
-							<c:forEach var="i" begin="${paging.startPageNo}" end="${paging.endPageNo}" step="1">
-								<c:choose>
-									<c:when test="${i eq paging.currentPageNo}">
-										<a href="javascript:goPage(${i})" style="color:red">${i} </a>
-									</c:when>
-									<c:otherwise>
-										<a href="javascript:goPage(${i})">${i} </a>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-				
-							<c:if test="${paging.currentPageNo < paging.finalPageNo}">
-								<a href="javascript:goPage(${paging.nextPageNo})">next</a>
-							</c:if>
-						</c:when>
-					</c:choose>
-					
-					<a href="/BBS/create">Write</a>
+					<a class="btn btn-primary" href="/BBS/create" role="button">Write</a>
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-center">	 	
+						    <c:choose>
+								<c:when test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">
+									<c:if test="${paging.currentPageNo gt 5}">
+										 <li class="page-item"><a class="page-link" href="javascript:goPage(${paging.prevPageNo})">prev</a></li>
+									</c:if>
+									
+									<c:forEach var="i" begin="${paging.startPageNo}" end="${paging.endPageNo}" step="1">
+										<c:choose>
+											<c:when test="${i eq paging.currentPageNo}">
+												 <li class="page-item active"><a class="page-link" href="javascript:goPage(${i})" >${i} </a></li>
+											</c:when>
+											<c:otherwise>
+												 <li class="page-item"><a class="page-link" href="javascript:goPage(${i})">${i} </a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+						
+									<c:if test="${paging.currentPageNo < paging.finalPageNo}">
+										 <li class="page-item"><a class="page-link" href="javascript:goPage(${paging.nextPageNo})">next</a></li>
+									</c:if>
+								</c:when>
+							</c:choose>
+					  	</ul>
+					</nav>
 				</div>
 		    </div>
 		    

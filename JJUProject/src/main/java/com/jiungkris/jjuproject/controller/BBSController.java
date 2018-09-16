@@ -59,6 +59,11 @@ public class BBSController {
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public String read(HttpServletRequest request, Model model) {
+		//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
+		
 		int b_no = Integer.parseInt(request.getParameter("b_no"));
 		BBSVO dto = new BBSVO();
 		
@@ -77,7 +82,12 @@ public class BBSController {
 	}
 	
 	@RequestMapping(value = "/create")
-	public String create() {
+	public String create(Model model) {
+		//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
+		
 		return "/BBS/createForm";
 	}
 	
@@ -95,6 +105,11 @@ public class BBSController {
 	
 	@RequestMapping(value = "/prePasswordCheck")
 	public String prePasswordCheck(HttpServletRequest request, Model model) {
+		//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
+		
 		model.addAttribute("b_no", Integer.parseInt(request.getParameter("b_no")));
 		model.addAttribute("b_type", request.getParameter("b_type"));
 		return "/BBS/passwordCheck";
@@ -102,7 +117,11 @@ public class BBSController {
 	
 	@RequestMapping(value = "/passwordProcess", method = RequestMethod.POST)
 	public String passwordProcess(BBSVO dto, Model model, HttpServletRequest request) {
-
+		//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
+		
 		String page = "";
 		String realPW = "";
 		String route = request.getParameter("b_type");

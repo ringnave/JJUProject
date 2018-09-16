@@ -9,54 +9,77 @@
 
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>Read</title>
-	<jsp:include page="../home.jsp" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
-	<h1>Read</h1>
-	
-	<table border="1">
-		<tr>
-			<th>Title</th>
-			<td>${read.b_title}</td>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<jsp:include page="../home.jsp" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-9">
+				<h1>Read</h1>
+				
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Title</th>
+							<td colspan="5">${read.b_title}</td>
+						</tr>
+						<tr>
+							<th style="width: 66px;">Writer</th>
+							<td>${read.b_writer}</td>
+							
+							<th style="width: 56px;">Views</th>
+							<td>${read.b_views}</td>
+							
+							<th style="width: 56px;">Date</th>
+							<td>${read.b_date}</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Content</th>
+							<td colspan="7" style="height: 411px;">${read.b_content}</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
+				<c:choose>
+					<c:when test="${idName eq read.b_writer}"> <!-- 프리패스 -->
+						<a href="/BBS/pass?b_type=update&b_no=${read.b_no}" class="btn btn-info">Modify</a>
+						<a href="/BBS/pass?b_type=delete&b_no=${read.b_no}" class="btn btn-danger">Delete</a>	
+					</c:when>
+					<c:when test="${read.b_writer.indexOf('(No Account)') eq -1}">	
+					</c:when>
+					<c:otherwise>
+						<a href="/BBS/prePasswordCheck?b_type=update&b_no=${read.b_no}" class="btn btn-info">Modify</a>
+						<a href="/BBS/prePasswordCheck?b_type=delete&b_no=${read.b_no}" class="btn btn-danger">Delete</a>
+					</c:otherwise>
+				</c:choose>
+				
+				<a href="javascript:history.back();" class="btn btn-secondary">Back</a><br>
+				
+				<!-- Comments -->
+				<div id="commentList"></div>
+				<div id="commentListPaging"></div>
+				
+				<c:if test="${sessionScope.loginSuccess != null}">
+					<textarea rows="3" id="commentContent" class="form-control col-sm-10" style="margin-bottom: 5px;"></textarea>
+					<button class="btn btn-primary" type="submit" id="commentBtn"style="margin-bottom: 50px;">Post a comment</button>
+				</c:if>	
+			</div>
 			
-			<th>Writer</th>
-			<td>${read.b_writer}</td>
-			
-			<th>Views</th>
-			<td>${read.b_views}</td>
-			
-			<th>Date</th>
-			<td>${read.b_date}</td>
-		</tr>
-		<tr>
-			<th>Content</th>
-			<td colspan="7">${read.b_content}</td>
-		</tr>
-	</table>
+			<div class="col" style="margin-top: 16px;">
+				<jsp:include page="../sideIds.jsp" />
+			</div>
+		</div>
+	</div>
 	
-	<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
-	<c:choose>
-		<c:when test="${idName eq read.b_writer}"> <!-- 프리패스 -->
-			<a href="/BBS/pass?b_type=update&b_no=${read.b_no}">Modify</a>
-			<a href="/BBS/pass?b_type=delete&b_no=${read.b_no}">Delete</a>	
-		</c:when>
-		<c:when test="${read.b_writer.indexOf('(No Account)') eq -1}">	
-		</c:when>
-		<c:otherwise>
-			<a href="/BBS/prePasswordCheck?b_type=update&b_no=${read.b_no}">Modify</a>
-			<a href="/BBS/prePasswordCheck?b_type=delete&b_no=${read.b_no}">Delete</a>
-		</c:otherwise>
-	</c:choose>
-	
-	<a href="#" onClick="history.go(-1); return false;">Back</a><br>
-	
-	<!-- Comments -->
-	<div id="commentList"></div>
-	<c:if test="${sessionScope.loginSuccess != null}">
-		<textarea rows="3" cols="55" id="commentContent"></textarea>
-		<button type="submit" id="commentBtn">Post a comment</button>
-	</c:if>
 	
 	<script type="text/javascript">
 		commentList(getRecentPage())
@@ -110,37 +133,44 @@
 		        type: "get",
 		        url: "/comment/list?b_no=${read.b_no}"+"&page="+page,
 		        success: function(result){
-		        	var output = '<table border="1">'
+		        	var output = '<br><table class="table">'
+		        	var outputPaging = '<nav aria-label="Page navigation example">'
+		        	
 		            for(var i in result.comments){
-		                output += "<tr>"
-		                output += "<td>"+result.comments[i].name+"("+result.comments[i].id+")</td>"
-		                output += "<td>"+result.comments[i].content+"</td>"
-		                output += "<td>"+dateForm(result.comments[i].regDate)+"</td>"
+		                output += '<tr scope="row">'
+		                output += "<td scope='col' style='width: 174px;'>"+result.comments[i].name+" ("+result.comments[i].id+")</td>"
+		                output += "<td scope='col'>"+result.comments[i].content+"</td>"
+		                output += "<td scope='col' style='width: 174px;'>"+dateForm(result.comments[i].regDate)+"</td>"
 		                if(myId == result.comments[i].id){
-		                	output += '<td><a href="javascript:commentDelete('+result.comments[i].commentNo+')">delete</a></td>'
+		                	output += '<td scope="col"><a href="javascript:commentDelete('+result.comments[i].commentNo+')">delete</a></td>'
 		                }
 		                output += "<tr>"
 		            }
 		            output += "</table>"
 		            
+		            outputPaging += '<ul class="pagination justify-content-center">'
 		            if(result.paging.numberOfRecords != 0){
 		            	if(result.paging.currentPageNo > 5){
-		            		output += '<a href="javascript:goPage('+result.paging.prevPageNo+')">prev</a>'
+		            		outputPaging += '<li class="page-item"><a class="page-link" href="javascript:goPage('+result.paging.prevPageNo+')">prev</a></li>'
 		            	}
 		            	
 		            	for (var i = result.paging.startPageNo; i <= result.paging.endPageNo; i++) {
 							if(i == result.paging.currentPageNo){
-								output += '<a href="javascript:goPage('+i+')" style="color:red">'+i+'</a>'
+								outputPaging += '<li class="page-item"><a class="page-link" href="javascript:goPage('+i+')" style="color:red">'+i+'</a></li>'
 							} else {
-								output += '<a href="javascript:goPage('+i+')">'+i+'</a>'
+								outputPaging += '<li class="page-item"><a class="page-link" href="javascript:goPage('+i+')">'+i+'</a></li>'
 							}
 						}
 		            	
 		            	if(result.paging.currentPageNo < result.paging.finalPageNo){
-		            		output += '<a href="javascript:goPage('+result.paging.nextPageNo+')">next</a>'
+		            		outputPaging += '<li class="page-item"><a class="page-link" href="javascript:goPage('+result.paging.nextPageNo+')">next</a></li>'
 		            	}
 		            }
+		            
+		            outputPaging += '</ul>'
+		            outputPaging += '</nav>'
 		            $("#commentList").html(output)
+		            $("#commentListPaging").html(outputPaging)
 		        },
 		        error: function(){
 		        	console.log("comment page error")
