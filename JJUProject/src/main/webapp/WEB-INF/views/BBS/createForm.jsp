@@ -25,42 +25,44 @@
 				<h1>Create</h1>
 				
 				<form action = "/BBS/createProcess" method = "post" name="createInfo" onsubmit="return checkCreate()"> 
-					<table border="1">
+					<table class="table table-bordered">
 						<tr>
 							<th>Title</th>
-							<td><input type="text" name="b_title"></td>
-							
+							<td><input type="text" name="b_title" class="form-control"></td>
+						</tr>
+						<tr>
 							<th>Writer</th>
 							<c:choose>
 								<c:when test="${not empty loginSuccess}">
-									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})"></td>
+									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})" class="form-control"></td>
 								</c:when>
 								<c:otherwise>
-									<td><input type="text" name="b_writer"></td>
+									<td><input type="text" name="b_writer" class="form-control"></td>
 								</c:otherwise>
 							</c:choose>				
 						</tr>
 						<tr>
 							<c:choose>
 								<c:when test="${not empty loginSuccess}">
-									<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }"></td>
+									<td style="display:none"><input type="password" name="b_pw" value="${loginSuccess.id }" class="form-control"></td>
 								</c:when>
 								<c:otherwise>
 									<th>Password</th>
-									<td><input type="password" name="b_pw"></td>
+									<td><input type="password" name="b_pw" class="form-control"></td>
 								</c:otherwise>
 							</c:choose>	
 						</tr>
 						<tr>
 							<th>Content</th>
-							<td colspan="4"><textarea rows="10" cols="55" name="b_content" ></textarea></td>
+							<td colspan="4"><textarea rows="10" cols="55" name="b_content" class="form-control col-sm-55"></textarea></td>
 						</tr>
 					</table>
 					
-					<button type="submit">Create</button>
+					<button type="submit" class="btn btn-primary">Create</button>
+					<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
 				</form>
 				 
-				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+				
 			</div>
 
 			<div class="col" style="margin-top: 16px;">

@@ -12,7 +12,7 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 	<title>JJProject</title>
-	
+		
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" ></script>
 </head>
 <body>
@@ -28,29 +28,29 @@
 				<div id="content">
 					<h1>BBS</h1>
 					
-					<table class="table table-hover table-bordered">
+					<table class="table table-hover table-bordered" style="table-layout:fixed">
 						<thead>
 							<tr>
-								<th scope="col" style="width: 46px;">No</th>
-								<th scope="col" style="width: 336px;">Title</th>
-								<th scope="col" style="width: 136px;">Writer</th>
+								<th scope="col" style="width: 60px;">No</th>
+								<th scope="col">Title</th>
+								<th scope="col" style="width: 126px;">Writer</th>
 								<th scope="col" style="width: 66px;">Views</th>
-								<th scope="col" style="width: 240px;">Date</th>
+								<th scope="col" style="width: 270px;">Date</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="list" items="${pages}">
 								<tr>
 									<td>${list.b_no}</td>
-									<td>
+									<td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
 										<a href = "/BBS/read?b_no=${list.b_no}">${list.b_title}</a>
 										<c:if test="${list.b_commentCount > 0 }">
 											(${list.b_commentCount})
 										</c:if>
 									</td>
-									<td>${list.b_writer}</td>
+									<td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${list.b_writer}</td>
 									<td>${list.b_views}</td>
-									<td>${list.b_date}</td>
+									<td style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">${list.b_date}</td>
 								</tr>	
 							</c:forEach>
 						</tbody>

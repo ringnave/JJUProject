@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,7 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 @Controller
 @RequestMapping(value = "/BBS")
 public class BBSController {
+	private static Logger logger = LoggerFactory.getLogger(BBSController.class);
 	
 	@Inject
 	BBSService bbsService;	
@@ -92,8 +96,11 @@ public class BBSController {
 	}
 	
 	@RequestMapping(value = "/createProcess", method = RequestMethod.POST)
-	public String createProcess(BBSVO dto) {
-		dto.setB_writer(dto.getB_writer() + " (No Account)");
+	public String createProcess(BBSVO dto, HttpSession session) {
+		if(session.getAttribute("loginSuccess") == null) {
+			dto.setB_writer(dto.getB_writer() + " (No Account)");
+		}
+		
 		try {
 			bbsService.create(dto);
 		} catch (Exception e) {
@@ -137,6 +144,11 @@ public class BBSController {
 			switch (route) {
 				case "update":
 					dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
+
+					// Removing (No Account)
+					String writer = dto.getB_writer();
+					dto.setB_writer(writer.substring(0, writer.length()-13));
+					
 					model.addAttribute("dto", dto);
 					page = "/BBS/updateForm";
 					break;
@@ -162,6 +174,7 @@ public class BBSController {
 	@RequestMapping(value = "/updateProcess", method = RequestMethod.POST)
 	public String updateProcess(BBSVO dto) {
 		try {
+			dto.setB_writer(dto.getB_writer() + " (No Account)");
 			bbsService.update(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -182,7 +195,6 @@ public class BBSController {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
 		
 		switch (route) {
 			case "update":

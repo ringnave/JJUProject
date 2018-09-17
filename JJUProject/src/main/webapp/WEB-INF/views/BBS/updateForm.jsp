@@ -24,28 +24,30 @@
 				<form action = "/BBS/updateProcess" method = "post"> 
 					<input type="hidden" name="b_no" value="${dto.b_no}">
 					<input type="hidden" name="b_views" value="${dto.b_views}">
-					<table border="1">
+					<table class="table table-bordered">
 						<tr>
 							<th>Title</th>
-							<td><input type="text" name="b_title" value="${dto.b_title}"></td>
-							
+							<td><input type="text" name="b_title" value="${dto.b_title}" class="form-control"></td>
+						</tr>
+						<tr>
 							<th>Writer</th>
-							<td><input type="text" name="b_writer" value="${dto.b_writer}"></td>
+							<td><input type="text" name="b_writer" value="${dto.b_writer}" class="form-control"></td>
 						</tr>
 						<tr>
 							<th>Password</th>
-							<td><input type="password" name="b_pw" value="${dto.b_pw}"></td>
+							<td><input type="password" name="b_pw" value="${dto.b_pw}" class="form-control"></td>
 						</tr>
 						<tr>
 							<th>Content</th>
-							<td colspan="4"><textarea rows="10" cols="55" name="b_content">${dto.b_content}</textarea></td>
+							<td colspan="4"><textarea rows="10" cols="55" name="b_content" class="form-control col-sm-55">${dto.b_content}</textarea></td>
 						</tr>
 					</table>
 					
-					<input type="submit" value="Modify">
+					<input type="submit" value="Modify" class="btn btn-primary">
+					<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
 				</form>
 				 
-				<a href="javascript:history.back();" class="btn btn-secondary">Back</a>
+				
 			</div>
 
 			<div class="col" style="margin-top: 16px;">
