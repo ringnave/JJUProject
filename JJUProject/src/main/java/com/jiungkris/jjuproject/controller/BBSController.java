@@ -7,8 +7,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +21,6 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 @Controller
 @RequestMapping(value = "/BBS")
 public class BBSController {
-	private static Logger logger = LoggerFactory.getLogger(BBSController.class);
 	
 	@Inject
 	BBSService bbsService;	
@@ -132,6 +129,10 @@ public class BBSController {
 		String page = "";
 		String realPW = "";
 		String route = request.getParameter("b_type");
+		int whichone = -1;
+		
+		if(route.equals("update")) whichone = 1;
+		if(route.equals("delete")) whichone = 2;
 		
 		try {
 			realPW = dto.getB_pw();
@@ -141,8 +142,8 @@ public class BBSController {
 		}
 		
 		if(realPW.equals(dto.getB_pw())) {
-			switch (route) {
-				case "update":
+			switch (whichone) {
+				case 1:
 					dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
 
 					// Removing (No Account)
@@ -152,7 +153,7 @@ public class BBSController {
 					model.addAttribute("dto", dto);
 					page = "/BBS/updateForm";
 					break;
-				case "delete":
+				case 2:
 					try {
 						bbsService.delete(dto.getB_no());
 					} catch (Exception e) {
@@ -189,6 +190,10 @@ public class BBSController {
 		String route = request.getParameter("b_type");
 		int no = Integer.parseInt(request.getParameter("b_no"));
 		BBSVO dto = new BBSVO();
+		int whichone = -1;
+		
+		if(route.equals("update")) whichone = 1;
+		if(route.equals("delete")) whichone = 2;
 		
 		try {
 			dto = bbsService.read(no);
@@ -196,13 +201,13 @@ public class BBSController {
 			e1.printStackTrace();
 		}
 		
-		switch (route) {
-			case "update":
+		switch (whichone) {
+			case 1:
 				dto.setB_content(dto.getB_content().replace("<br>", "\r\n"));
 				model.addAttribute("dto", dto);
 				page = "/BBS/updateForm";
 				break;
-			case "delete":
+			case 2:
 				try {
 					bbsService.delete(dto.getB_no());
 				} catch (Exception e) {
