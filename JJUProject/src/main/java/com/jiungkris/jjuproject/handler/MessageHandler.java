@@ -108,7 +108,6 @@ public class MessageHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
     	Map<String,Object> map = session.getAttributes();
-    	String otherId = (String)map.get("otherId");
 		MemberVO myVo = (MemberVO) map.get("loginSuccess");
 		
 		// Find the room where this session is in.
