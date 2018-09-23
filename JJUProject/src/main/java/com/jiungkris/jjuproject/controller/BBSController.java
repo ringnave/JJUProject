@@ -173,9 +173,12 @@ public class BBSController {
 	}
 	
 	@RequestMapping(value = "/updateProcess", method = RequestMethod.POST)
-	public String updateProcess(BBSVO dto) {
+	public String updateProcess(HttpSession session, BBSVO dto) {
+		MemberVO loginInfo = (MemberVO) session.getAttribute("loginSuccess");
+		String idName = loginInfo.getName() + " (" + loginInfo.getId() + ")";
 		try {
-			dto.setB_writer(dto.getB_writer() + " (No Account)");
+			if(!idName.equals(dto.getB_writer()))	
+				dto.setB_writer(dto.getB_writer() + " (No Account)");
 			bbsService.update(dto);
 		} catch (Exception e) {
 			e.printStackTrace();

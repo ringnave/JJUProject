@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,7 +32,15 @@
 						</tr>
 						<tr>
 							<th>Writer</th>
-							<td><input type="text" name="b_writer" value="${dto.b_writer}" class="form-control"></td>
+							<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
+							<c:choose>
+								<c:when test="${idName eq dto.b_writer}">
+									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})" class="form-control"></td>	
+								</c:when>
+								<c:otherwise>
+									<td><input type="text" name="b_writer" value="${dto.b_writer}" class="form-control"></td>
+								</c:otherwise>
+							</c:choose>
 						</tr>
 						<tr>
 							<th>Password</th>

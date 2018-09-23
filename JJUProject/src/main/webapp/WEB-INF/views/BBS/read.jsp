@@ -50,7 +50,7 @@
 				
 				<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
 				<c:choose>
-					<c:when test="${idName eq read.b_writer}"> <!-- 프리패스 -->
+					<c:when test="${idName eq read.b_writer}">
 						<a href="/BBS/pass?b_type=update&b_no=${read.b_no}" class="btn btn-info">Modify</a>
 						<a href="/BBS/pass?b_type=delete&b_no=${read.b_no}" class="btn btn-danger">Delete</a>	
 					</c:when>
