@@ -1,8 +1,5 @@
 package com.jiungkris.jjuproject;
 
-import java.util.HashMap;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import org.junit.Test;
