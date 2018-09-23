@@ -175,14 +175,28 @@ public class BBSController {
 	@RequestMapping(value = "/updateProcess", method = RequestMethod.POST)
 	public String updateProcess(HttpSession session, BBSVO dto) {
 		MemberVO loginInfo = (MemberVO) session.getAttribute("loginSuccess");
-		String idName = loginInfo.getName() + " (" + loginInfo.getId() + ")";
-		try {
-			if(!idName.equals(dto.getB_writer()))	
-				dto.setB_writer(dto.getB_writer() + " (No Account)");
-			bbsService.update(dto);
-		} catch (Exception e) {
-			e.printStackTrace();
+		String idName;
+		
+		if(loginInfo != null) {
+			idName = loginInfo.getName() + " (" + loginInfo.getId() + ")";
+			
+			try {
+				if(!idName.equals(dto.getB_writer()))	
+					dto.setB_writer(dto.getB_writer() + " (No Account)");
+				bbsService.update(dto);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		else {
+			try {
+				dto.setB_writer(dto.getB_writer() + " (No Account)");
+				bbsService.update(dto);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		
 		return "redirect:list";
 	}

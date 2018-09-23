@@ -30,22 +30,29 @@
 							<th>Title</th>
 							<td><input type="text" name="b_title" value="${dto.b_title}" class="form-control"></td>
 						</tr>
-						<tr>
-							<th>Writer</th>
-							<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
-							<c:choose>
-								<c:when test="${idName eq dto.b_writer}">
-									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})" class="form-control"></td>	
-								</c:when>
-								<c:otherwise>
+						
+							
+						<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
+						<c:choose>
+							<c:when test="${idName eq dto.b_writer}">
+								<tr>
+									<th>Writer</th>
+									<td><input type="text" name="b_writer" readonly="readonly" value="${loginSuccess.name} (${loginSuccess.id})" class="form-control"></td>
+								</tr>
+								<input type="hidden" name="b_pw" value="${dto.b_pw}" class="form-control">
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<th>Writer</th>
 									<td><input type="text" name="b_writer" value="${dto.b_writer}" class="form-control"></td>
-								</c:otherwise>
-							</c:choose>
-						</tr>
-						<tr>
-							<th>Password</th>
-							<td><input type="password" name="b_pw" value="${dto.b_pw}" class="form-control"></td>
-						</tr>
+								</tr>
+								<tr>
+									<th>Password</th>
+									<td><input type="password" name="b_pw" value="${dto.b_pw}" class="form-control"></td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+						
 						<tr>
 							<th>Content</th>
 							<td colspan="4"><textarea rows="10" cols="55" name="b_content" class="form-control col-sm-55">${dto.b_content}</textarea></td>
