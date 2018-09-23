@@ -54,9 +54,26 @@ public class HomeController {
 	}
     
     @ResponseBody
-    @RequestMapping(value = "/sessionTimeLogout", method = RequestMethod.POST)
-	public void sessionTimeLogout(HttpSession session) {
+    @RequestMapping(value = "/startTimer", method = RequestMethod.POST)
+	public void startTimer(HttpSession session) {
     	TimerForLogout timerForLogout = (TimerForLogout) session.getAttribute("timerForLogout");
-    	if(timerForLogout != null) timerForLogout.setCount(0);
+    	
+    	if(timerForLogout != null) {
+    		if(timerForLogout.isPaused() == true) {
+        		timerForLogout.setPaused(false);
+        	}
+    		
+    		timerForLogout.setCount(0);
+    	}
+	}
+    
+    @ResponseBody
+    @RequestMapping(value = "/pauseTimer", method = RequestMethod.POST)
+	public void pauseTimer(HttpSession session) {
+    	TimerForLogout timerForLogout = (TimerForLogout) session.getAttribute("timerForLogout");
+    	
+    	if(timerForLogout != null) {
+    		timerForLogout.setPaused(true);
+    	}
 	}
 }

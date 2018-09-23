@@ -6,9 +6,9 @@ import java.util.TimerTask;
 import javax.servlet.http.HttpSession;
 
 public class TimerForLogout {
-	
 	private int count = 0;
 	private Timer timer;
+	private boolean isPaused = false;
 	
 	public TimerForLogout(final HttpSession session) {
 		
@@ -17,18 +17,33 @@ public class TimerForLogout {
 			
 			@Override
 			public void run() {
-				if(count >= 3) {
-					try {
-						session.invalidate();
-					} catch (Exception e) {
-						e.getStackTrace();
+				if(isPaused == false) {
+					if(count >= 3) {
+						try {
+							session.invalidate();
+						} catch (Exception e) {
+							e.getStackTrace();
+						}
+						timer.cancel();
 					}
-					timer.cancel();
+					count++;
 				}
-				count++;
+				else {
+					count = 0;
+				}
 			}
 		};
 		timer.schedule(task, 0, 1000);
+	}
+
+	
+	
+	public boolean isPaused() {
+		return isPaused;
+	}
+
+	public void setPaused(boolean isPaused) {
+		this.isPaused = isPaused;
 	}
 
 	public int getCount() {
