@@ -52,7 +52,7 @@ Add this code below to jsp file that you want to show this.
 	</form>
 		
 	<!-- User listing --> 
-	<select id="idList" name="users" size="22" onchange="enrollSession()" class="custom-select">
+	<select id="idList" name="users" size="22" class="custom-select">
 		<c:forEach var="idList" items="${idList}">
 			<c:choose>
 				<c:when test="${idList.current == 1 }">
@@ -62,7 +62,7 @@ Add this code below to jsp file that you want to show this.
 					<option id="${idList.id}" value="${idList.name} (${idList.id})"> ${idList.name} (${idList.id}) </option>
 				</c:otherwise>
 			</c:choose>
-
+			<c:out value="test"></c:out>
 			<script type="text/javascript">
 				function isMobile() {
 				    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -74,9 +74,6 @@ Add this code below to jsp file that you want to show this.
 				}
 				
 				if (isMobile()) {
-					
-					
-					
 					$('#idList').on('click', function(){
 						
 						$('#modalBtn').prop("disabled", false)	
@@ -114,7 +111,7 @@ Add this code below to jsp file that you want to show this.
 					        		document.getElementById(${idList.id}.id).innerHTML = "${idList.name} (${idList.id})"
 					        	}
 					        },
-					        error : function(request, status, error) {}
+					        error : function(request, status, error) {console.log("error")}
 					    })
 					})
 				}

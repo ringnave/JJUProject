@@ -203,6 +203,11 @@ public class BBSController {
 	
 	@RequestMapping(value = "/pass", method = RequestMethod.GET)
 	public String pass(Model model, HttpServletRequest request) {
+		//For sideIds.jsp
+		List<MemberVO> idList = new ArrayList<MemberVO>();
+		idList = currentService.getCurrentUsers();
+		model.addAttribute("idList", idList);
+		
 		String page = "";
 		String route = request.getParameter("b_type");
 		int no = Integer.parseInt(request.getParameter("b_no"));

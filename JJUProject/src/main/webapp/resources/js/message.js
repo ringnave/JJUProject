@@ -149,10 +149,10 @@ startInterval(1, function(){
         	document.currentUsersForm.currentUsers.value = data.currentUsers
         	data.currentUsersList.map(value => {
         		if(value.current == 1){
-        			document.getElementById(value.id).style.color="blue"
+        			$(value.id).css('color: blue')
         		}
         		else{
-        			document.getElementById(value.id).style.color="black"
+        			$(value.id).css('color: black')
         		}
         	})
         },
@@ -162,22 +162,6 @@ startInterval(1, function(){
 
 function goPage(pages){
 	location.href = '?' + "page=" + pages;
-}
-
-function enrollSession(){
-	var idList = document.getElementById("idList");
-    var selectId = idList.options[idList.selectedIndex].id;
-    
-    $.ajax({ 
-		async: true,
-        type : "POST",
-        url : "/enrollSession",
-        data : selectId,
-        contentType: "application/json; charset=UTF-8",
-        error : function(request, status, error) {
-        	alert("enrollSession() error")
-        }
-    })
 }
 
 function sessionCheck(){

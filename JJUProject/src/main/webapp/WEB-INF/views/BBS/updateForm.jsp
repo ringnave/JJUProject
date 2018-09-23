@@ -31,7 +31,6 @@
 							<td><input type="text" name="b_title" value="${dto.b_title}" class="form-control"></td>
 						</tr>
 						
-							
 						<c:set var="idName" value="${loginSuccess.name} (${loginSuccess.id})"></c:set>
 						<c:choose>
 							<c:when test="${idName eq dto.b_writer}">
