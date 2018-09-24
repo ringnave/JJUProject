@@ -49,7 +49,7 @@ public class AlarmDAOTest {
     	dao.removeAlarm("aaa", "bbb");
     }
     
-    @Test
+//    @Test
     public void list() {
     	System.out.println(dao.readForList("aaa").get(0).get("bbb"));
     }
