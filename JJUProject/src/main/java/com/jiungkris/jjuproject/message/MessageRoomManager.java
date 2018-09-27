@@ -2,29 +2,20 @@ package com.jiungkris.jjuproject.message;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MessageRoomManager {
-	private static Logger logger = LoggerFactory.getLogger(MessageRoomManager.class);
 	
 	private static List<MessageRoom> roomList;
-	private static AtomicInteger atomicInteger;
 	
 	static {
 		roomList = new LinkedList<MessageRoom>();
-		atomicInteger = new AtomicInteger(-1);
 	}
 	
+	// Target ID is other's ID so it can define who the room targets. 
 	public static MessageRoom makeRoom(String targetId) {
-		int roomNumber = atomicInteger.incrementAndGet();
-		MessageRoom room = new MessageRoom(roomNumber);
+		MessageRoom room = new MessageRoom();
 		room.setTargetId(targetId);
 		roomList.add(room);
-		
-//		logger.info("room list: " + roomList);
 		
 		return room;
 	}
@@ -36,9 +27,6 @@ public class MessageRoomManager {
 	public static MessageRoom findOnePersonRoomById(String myId, String otherId) {
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
-			logger.info("room.getNumberOfPeople() == 1 : " + (room.getNumberOfPeople() == 1));
-			logger.info("room.findId(" + otherId +") :" + room.findId(otherId));
-			logger.info("room.getTargetId().equals("+myId+") : " + room.getTargetId().equals(myId));
 			if(room.getNumberOfPeople() == 1 && room.findId(otherId) && room.getTargetId().equals(myId)) {
 				myRoom = room;
 				break;
@@ -48,16 +36,13 @@ public class MessageRoomManager {
 	}
 
 	public static MessageRoom findRoomById(String id) {
-//		logger.info("findRoomById called!");
 		MessageRoom myRoom = null;
 		for(MessageRoom room : roomList) {
 			if(room.findId(id)) {
 				myRoom = room;
 				return myRoom;
 			}
-//			logger.info("This should print once");
 		}
-//		logger.info("This should not print");
 		return myRoom;
 	}
 }

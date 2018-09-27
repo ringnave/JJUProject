@@ -52,7 +52,7 @@ Add this code below to jsp file that you want to show this.
 	</form>
 		
 	<!-- User listing --> 
-	<select id="idList" name="users" size="22" class="custom-select">
+	<select id="idList" name="users" size="22" onchange="enrollSession()" class="custom-select">
 		<c:forEach var="idList" items="${idList}">
 			<c:choose>
 				<c:when test="${idList.current == 1 }">

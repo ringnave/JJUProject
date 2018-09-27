@@ -3,29 +3,20 @@ package com.jiungkris.jjuproject.randomchat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.WebSocketSession;
 
 public class RoomManager {
-	private static Logger logger = LoggerFactory.getLogger(RoomManager.class);
 	
 	private static List<Room> roomList;
-	private static AtomicInteger atomicInteger;
 	
 	static {
 		roomList = new LinkedList<Room>();
-		atomicInteger = new AtomicInteger(-1);
 	}
 	
 	public static Room makeRoom() {
-		int roomNumber = atomicInteger.incrementAndGet();
-		Room room = new Room(roomNumber);
+		Room room = new Room();
 		roomList.add(room);
-		
-		logger.info("room list: " + roomList);
 		
 		return room;
 	}

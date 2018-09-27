@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +21,6 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 @Controller
 public class MatchingController {
 	
-	private static Logger logger = LoggerFactory.getLogger(MatchingController.class);
-	
 	@Inject
 	private RecordDialogueService recordDialogueService;
 	
@@ -37,16 +33,12 @@ public class MatchingController {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		
     	Room room = RoomManager.findRoomBySession(sessionId);
-    	
-		logger.info(sessionId + "'room: " + room);
 		
     	if(room != null && room.getNumberOfPeople() == 2) {
 			map.put("isMatched", true);
-			logger.info(sessionId + " is matched (true)");
 		}
 		else {
 			map.put("isMatched", false);
-			logger.info(sessionId + " is not matched (false)");
 		}
     	
     	return map;
@@ -64,7 +56,7 @@ public class MatchingController {
 		MemberVO myVo = (MemberVO) session.getAttribute("loginSuccess");
 		String otherId = (String) session.getAttribute("otherId");
 		
-		if(myVo == null || otherId.equals(null)) return null;
+		if(myVo == null) return null;
 		
 		return recordDialogueService.readRecord(myVo.getId(), otherId);
 	}

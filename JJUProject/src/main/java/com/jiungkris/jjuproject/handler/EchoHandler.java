@@ -1,7 +1,5 @@
 package com.jiungkris.jjuproject.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -11,8 +9,7 @@ import com.jiungkris.jjuproject.randomchat.Room;
 import com.jiungkris.jjuproject.randomchat.RoomManager;
 
 public class EchoHandler extends TextWebSocketHandler {
-	// This sector is public place.
-	private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
+	// This area is public place.
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -22,13 +19,11 @@ public class EchoHandler extends TextWebSocketHandler {
 		if(room != null) {
 			// If you found the one person room, join it.
 			room.join(session);
-			logger.info(session.getId() + " joined and matched.");
 		}
 		else {
 			// But If you didn't, Make a room, join in and wait.
 			room = RoomManager.makeRoom();
 			room.join(session);
-			logger.info(session.getId() + " made a room and joined. room is " + room);
 		}
 	}
 	
@@ -36,6 +31,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		// Find the room where this session is in.
 		Room room = RoomManager.findRoomBySession(session);
+		
 		// Call the people list of the room, and then message them.
 		for(WebSocketSession wsSession : room.getSessionList()) {
 			if(wsSession == session) {
@@ -45,7 +41,6 @@ public class EchoHandler extends TextWebSocketHandler {
 				wsSession.sendMessage(new TextMessage("Anonymous: " + message.getPayload() + "\r\n"));
 			}
 		}
-		logger.info(session.getId() + " sent a message.");
 	}
 	
 	@Override
@@ -58,6 +53,5 @@ public class EchoHandler extends TextWebSocketHandler {
 			room.closeSessions();
 			RoomManager.removeRoom(room);
 		}
-		logger.info(session.getId() + " removed the room");
 	}
 }

@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -19,7 +17,6 @@ import com.jiungkris.jjuproject.vo.MemberVO;
 
 public class MessageHandler extends TextWebSocketHandler {
 	// This sector is public place.
-	private static Logger logger = LoggerFactory.getLogger(MessageHandler.class);
 	
 	@Inject
 	private RecordDialogueService recordDialogueService;
@@ -38,13 +35,11 @@ public class MessageHandler extends TextWebSocketHandler {
 		if(room != null) {
 			// If you found the one person room, join it.
 			room.join(myVo.getId(), session);
-			logger.info(session.getId() + " joined and matched.");
 		}
 		else {
 			// But If you didn't, Make a room, join in and wait. Target is otherId.
 			room = MessageRoomManager.makeRoom(otherId);
 			room.join(myVo.getId(), session);
-			logger.info(session.getId() + " made a room and joined. room is " + room);
 		}
     }
 	
@@ -91,7 +86,7 @@ public class MessageHandler extends TextWebSocketHandler {
 			}
 		}
 		
-		// If otherId is not me, record alarm. To hide self-alarm.
+		// If otherId is not me, increase and record alarm. To hide self-alarm.
 		if(!otherId.equals(myVo.getId())) {
 			String count = alarmService.readAlarmCount(otherId, myVo.getId());
 			int tmp = 0;
@@ -101,8 +96,6 @@ public class MessageHandler extends TextWebSocketHandler {
 			tmp++;
 			alarmService.recordAlarm(otherId, myVo.getId(), tmp);
 		}
-		
-		logger.info(session.getId() + " sent a message.");
     }
     
     @Override
@@ -121,9 +114,7 @@ public class MessageHandler extends TextWebSocketHandler {
 			
 			if(room.getNumberOfPeople() == 0) {
 				MessageRoomManager.removeRoom(room);
-				logger.info(session.getId() + " removed the room");
 			}
 		}
-		
     }
 }
