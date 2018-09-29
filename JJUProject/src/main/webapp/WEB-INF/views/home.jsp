@@ -90,7 +90,6 @@
 			}, 1000)
 		})
 		
-		
 	</script>
 	
 	<!-- Bootstrap javascript -->

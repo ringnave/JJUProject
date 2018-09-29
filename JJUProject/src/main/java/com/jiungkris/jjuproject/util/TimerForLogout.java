@@ -17,7 +17,11 @@ public class TimerForLogout {
 			
 			@Override
 			public void run() {
+				
+				// isPaused is for when you change a tab in a browser.
 				if(isPaused == false) {
+					
+					// If you don't reset the count to 0, by the time over 3 seconds, it'll sign out.
 					if(count >= 3) {
 						try {
 							session.invalidate();

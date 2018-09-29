@@ -35,13 +35,6 @@ public class CommentController {
 		commentVo.setName(memberVo.getName());
 		commentService.create(commentVo);
 	}
-
-//  JUST FOR BACKUP	
-//	@RequestMapping(value = "/list", method = RequestMethod.GET)
-//	public List<CommentVO> list(HttpServletRequest request, Model model) {
-//		int boardNo = Integer.parseInt(request.getParameter("b_no"));
-//		return commentService.list(boardNo);
-//	}
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public Map<Object, Object> list(HttpServletRequest request, Model model) {
